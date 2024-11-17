@@ -1,0 +1,23 @@
+[
+  {
+    "userId": 1,
+    "email": "user1@naver.com",
+    "password": "Asdf1234!",
+    "nickname": "user1",
+    "profile": "/images/profileEX"
+  },
+  {
+    "userId": 2,
+    "email": "user2@naver.com",
+    "password": "Asdf1234!",
+    "nickname": "user2",
+    "profile": "/images/imessage.png"
+  },
+  {
+    "userId": 3,
+    "email": "user3@naver.com",
+    "password": "Asdf1234!",
+    "nickname": "user3",
+    "profile": "/images/profile.png"
+  }
+]
