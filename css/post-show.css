@@ -46,6 +46,12 @@ button {
     justify-content: center;
 }
 
+.content-img img {
+    width: 100%; /* 이미지가 가로폭에 맞게 조정됨 */
+    height: 100%; /* 이미지가 세로높이에 맞게 조정됨 */
+    object-fit: contain; /* 이미지 잘리지않고 비율유지 */
+}
+
 .content {
     font-size: 12px;
     line-height: 1.5;
