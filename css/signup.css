@@ -1,0 +1,30 @@
+@import url('../css/global.css');
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.profile-input {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/*id="profile-helper*/
+#profile-helper {
+    color: #ff0000;
+    font-size: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 30px;
+    background-color: transparent;
+}

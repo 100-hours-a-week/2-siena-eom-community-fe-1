@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../css/signup.css" />
+</head>
+<body>
+    <header>
+        <div class="header-menu-left">
+            <a id="backspace" class="backspace" href="./login.html">
+                <img class="backspace" src="../images/backspace.png" />
+            </a>
+        </div>
+        <h1 class="title">아무말 대잔치</h1> 
+    </header>
+
+    <div class="container">
+        <form id="signup-form">
+            <h2 class="title">회원 가입</h2>
+
+            <div class="profile-input">
+                <label for="profile">프로필 사진</label>
+                <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
+                <img class="icon-image" src="../images/profile.png" id="profile-image" alt="프로필 이미지"/>
+                <p class="helperText" id="profile-helper"></p>
+            </div>
+
+            <label for="email">이메일</label>
+            <div class="email-container">
+                <div class="input-box">
+                    <input type="email" name="email" id="email" placeholder="이메일을 입력하세요" />
+                    <p class="helperText" id="email-helper"></p>
+                </div>
+                <button type="button" class="border-button" id="email-check">중복확인</button>
+            </div>
+
+            <div class="input-box">
+                <label for="pw">비밀번호</label>
+                <input type="password" name="password" id="pw" placeholder="비밀번호를 입력하세요" />
+                <p class="helperText" id="pw-helper"></p>
+            </div>
+
+            <div class="input-box">
+                <label for="pwck">비밀번호 확인</label>
+                <input type="password" name="password-check" id="pwck" placeholder="비밀번호를 한번 더 입력하세요" />
+                <p class="helperText" id="pwck-helper"></p>
+            </div>
+
+            <div class="input-box">
+                <label for="nickname">닉네임</label>
+                <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해 주세요" />
+                <p class="helperText" id="nickname-helper"></p>
+            </div>
+
+            <button type="submit" class="purple-button">회원가입</button>
+            <button type="button" onclick="location.href='./login.html'" class="trans-button">로그인 하러가기</button>
+        </form>
+    </div>
+    <script src="../js/signup.js"></script>
+</body>
+</html>

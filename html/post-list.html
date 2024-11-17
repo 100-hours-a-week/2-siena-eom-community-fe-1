@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 목록</title>
+    <link rel="stylesheet" href="../css/post-list.css">
+</head>
+<body>
+    <header>
+        <h1 class="title">아무말 대잔치</h1>
+        <div class="header-menu-right">
+            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="./profile-edit.html">회원정보 수정</a>
+                <a href="./pw-change.html">비밀번호 수정</a>
+                <a href="./login.html">로그아웃</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="message">
+            안녕하세요,<br/> 아무말 대잔치 <span class="bold">게시판</span>입니다.
+        </div>
+        <button type="button" onclick="location.href='./post-write.html'" class="purple-button">게시글 작성</button>
+        
+        <section class="PostList">
+
+            <div class="post-item" postId="1">
+                <div class="post-header">
+                    <h2 class="post-title">제목 1</h2>
+                </div>
+                <div class="post-info">
+                    <div class="post-stats">
+                        <span>좋아요 0</span>
+                        <span>댓글 0</span>
+                        <span>조회수 0</span>
+                    </div>
+                    <span class="post-date">2021-01-01 00:00:00</span>
+                </div>
+                <hr class="divider">
+                <div class="post-author">
+                    <img src="../profile.png" alt="프로필 사진" class="author-image">
+                    <span class="author-name">더미 작성자 1</span>
+                </div>
+            </div>
+
+            <div class="post-item" postId="2">
+                <div class="post-header">
+                    <h2 class="post-title">제목 1</h2>
+                </div>
+                <div class="post-info">
+                    <div class="post-stats">
+                        <span>좋아요 0</span>
+                        <span>댓글 0</span>
+                        <span>조회수 0</span>
+                    </div>
+                    <span class="post-date">2021-01-01 00:00:00</span>
+                </div>
+                <hr class="divider">
+                <div class="post-author">
+                    <img src="profile.png" alt="프로필 사진" class="author-image">
+                    <span class="author-name">더미 작성자 1</span>
+                </div>
+            </div>
+
+            <div class="post-item" postId="3">
+                <div class="post-header">
+                    <h2 class="post-title">제목 1</h2>
+                </div>
+                <div class="post-info">
+                    <div class="post-stats">
+                        <span>좋아요 0</span>
+                        <span>댓글 0</span>
+                        <span>조회수 0</span>
+                    </div>
+                    <span class="post-date">2021-01-01 00:00:00</span>
+                </div>
+                <hr class="divider">
+                <div class="post-author">
+                    <img src="profile.png" alt="프로필 사진" class="author-image">
+                    <span class="author-name">더미 작성자 1</span>
+                </div>
+            </div>
+
+            <div class="post-item" postId="4">
+                <div class="post-header">
+                    <h2 class="post-title">제목 1</h2>
+                </div>
+                <div class="post-info">
+                    <div class="post-stats">
+                        <span>좋아요 0</span>
+                        <span>댓글 0</span>
+                        <span>조회수 0</span>
+                    </div>
+                    <span class="post-date">2021-01-01 00:00:00</span>
+                </div>
+                <hr class="divider">
+                <div class="post-author">
+                    <img src="profile.png" alt="프로필 사진" class="author-image">
+                    <span class="author-name">더미 작성자 1</span>
+                </div>
+            </div>
+                
+            
+        </section>
+
+    </div>
+    <script src="../js/post-list.js"></script>
+</body>
+</html>

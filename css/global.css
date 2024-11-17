@@ -1,0 +1,263 @@
+header {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #000;
+    background-color: #F4F5F7;
+}
+
+header .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-menu-left {
+    position: fixed;
+    left: 25%;
+}
+
+.header-menu-right {
+    position: fixed;
+    right: 25%;
+}
+
+.header-menu-left .backspace,
+.header-menu-right img {
+    width: 32px;
+    height: 32px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F4F5F7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    position: relative;
+    background-color: transparent;
+    padding: 100px;
+    width: 400px;
+    height: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+input::placeholder {
+    color: #000;
+    opacity: 1;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.icon-image {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* 이미지 원형 처리 */
+    object-fit: cover; /* 이미지를 컨테이너에 맞춰 자르기 */
+    background-color: transparent;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.purple-button {
+    background-color: #ACA0EB;
+    color: white;
+}
+
+.trans-button {
+    background-color: transparent;
+    color: black;
+    margin-top: 5px;
+}
+
+.purple-button:hover {
+    background-color: #7F6AEE;
+}
+
+button.purple-button:disabled {
+    background-color: #cecae3;
+    cursor: not-allowed;
+}
+
+.email-container{
+    display: flex;
+    gap: 5px;
+}
+
+.email-container .input-box {
+    width: 90%;
+    position: relative;
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.border-button {
+    background-color: transparent;
+    border: 1px solid #000000;
+    color: #000000;
+    width: 20%;
+    height: 10%;
+
+}
+
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 32px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 110px;
+    text-align: left;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.header-menu-right:hover .dropdown-menu {
+    display: block;
+}
+
+.helperText {
+    position: absolute; /*밀리지않게 위치고정*/
+    display: block; /*블록요소로 자리잡고있기*/
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: 1.2;
+    word-wrap: break-word; /*긴텍스트 줄바꿈*/
+    width: 100%;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 300px;
+    width: 80%;
+}
+
+.modal h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.modal p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 30px;
+}
+
+.modal-cancel {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 35px;
+}
+
+.modal-confirm {
+    background-color: #aca0eb;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 35px;
+}
+
+body.modal-active {
+    overflow: hidden;
+}

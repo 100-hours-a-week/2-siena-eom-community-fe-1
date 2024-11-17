@@ -1,0 +1,226 @@
+@import url('../css/global.css');
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aca0ec;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 25px;
+    padding: 0 10px;
+    text-align: center;
+    font-size: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left: auto;
+}
+
+.comment-list .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left: auto;
+    width: 50%;
+}
+
+.horizontal-rule {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.content-img {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    background-color: #ccc;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.like-count {
+    background-color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: 110px;
+    height: 80px;
+}
+
+.view-count {
+    background-color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: 110px;
+    height: 80px;
+}
+
+
+.comment-count {
+    background-color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: 110px;
+    height: 80px;
+}
+
+/* h3와 p의 마진을 제거 또는 조정 */
+.like-count h3, .view-count h3, .comment-count h3 {
+    margin: 0; /* 마진 제거 */
+}
+
+.like-count p, .view-count p, .comment-count p {
+    margin: 0; /* 마진 제거 */
+}
+
+.comment-input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.comment {
+    margin-top: 20px;
+    border: #f0f0f0;
+}
+
+.comment-input textarea {
+    width: 100%;
+    height: 70px;
+    padding: 10px;
+    border: none;
+    box-sizing: border-box;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 15px 0;
+}
+
+
+.profile-icon2 {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-icon3 {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+.post-item {
+    max-width: 600px;
+    padding: 20px;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.post-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-info-2 {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+}
+
+.post-stats {
+    display: flex;
+    gap: 15px; /* 요소 간의 간격 조정 */
+}
+
+.post-date {
+    font-size: 14px;
+    color: #888;
+    right: 0;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 15px 0;
+}
+
+.post-author {
+    margin-right: 10px;
+}
+
+.author-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.comment-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px
+}
+
+.comment-author {
+    margin-right: 10px;
+}
+
+.comment-item-2 {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    width: 100%
+}
+
+.comment-content{
+    font-size: 15px;
+    margin-left: 55px
+}

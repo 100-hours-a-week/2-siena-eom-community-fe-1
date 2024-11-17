@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원 정보 수정</title>
+    <link rel="stylesheet" href="../css/profile-edit.css" />
+</head>
+<body>
+    <header>
+        <h1 class="title">아무말 대잔치</h1>
+        <div class="header-menu-right">
+            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="./profile-edit.html">회원정보 수정</a>
+                <a href="./pw-change.html">비밀번호 수정</a>
+                <a href="./login.html">로그아웃</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+
+        <form class="edit-form" action="" method="POST">
+            <h2 class="title">회원 정보 수정</h2>
+
+            <div class="profile-input">
+                <label for="profile">프로필 사진</label>
+                <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
+                <p class="helperText" id="profile-helper"></p>
+                <img class="icon-image" src="../images/profile.png" id="profile-image" alt="프로필 이미지"/>
+                
+            </div>
+
+            <div class="input-box">
+                <label for="email">이메일</label>
+                <p id="user-email" class="user-email">example@naver.com</p>
+            </div>
+
+            <div class="input-box">
+                <label for="nickname">닉네임</label>
+                <input type="text" name="nickname" id="nickname" placeholder="닉네임을 입력해 주세요"/>
+                <p class="helperText" name="nickname"></p>
+                <p class="helperText" id="nickname-helper"></p>
+            </div>
+                <button type="submit" class="purple-button">수정하기</button>
+                <button type="button" onclick="showConfirmModal()" class="trans-button">회원탈퇴</button>
+                <div id="toast" class="toast">수정완료</div>
+            
+        </form>
+    </div>
+    
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2>회원탈퇴 하시겠습니까?</h2>
+            <p>작성된 게시글과 댓글은 삭제됩니다.</p>
+            <div class="modal-buttons">
+                <button onclick="closeModal()" class="modal-cancel">취소</button>
+                <button onclick="confirmDeletion()" class="modal-confirm">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/profile-edit.js"></script>
+</body>
+</html>

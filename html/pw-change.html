@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 수정</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <header>
+        <h1 class="title">아무말 대잔치</h1>
+        <div class="header-menu-right">
+            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="./profile-edit.html">회원정보 수정</a>
+                <a href="./pw-change.html">비밀번호 수정</a>
+                <a href="./login.html">로그아웃</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <form class="change-form">
+            <h2 class="title">비밀번호 수정</h2>
+            <div class="input-box">
+                <label for="pw">비밀번호</label>
+                <input type="password" id="pw" placeholder="비밀번호를 입력하세요" />
+                <p class="helperText" id="pw-helper"></p>
+            </div>
+            <div class="input-box">
+                <label for="pwck">비밀번호 확인</label>
+                <input type="password" id="pwck" placeholder="비밀번호를 한번 더 입력하세요" />
+                <p class="helperText" id="pwck-helper"></p>
+            </div>
+            <button type="submit" class="purple-button">수정하기</button>
+            <div id="toast" class="toast">수정완료</div>
+        </form>
+    </div>
+    <script src="../js/pw-change.js"></script>
+</body>
+</html>
