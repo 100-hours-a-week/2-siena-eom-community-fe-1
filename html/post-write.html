@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="../css/post-write.css">
+</head>
+<body>
+    <header>
+        <div class="header-menu-left">
+            <a id="backspace" class="backspace" href="./post-list.html">
+                <img class="backspace" src="../images/backspace.png"/>
+            </a>
+        </div>
+        <h1 class="title">아무말 대잔치</h1>
+        <div class="header-menu-right">
+            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="./profile-edit.html">회원정보 수정</a>
+                <a href="./pw-change.html">비밀번호 수정</a>
+                <a href="./login.html">로그아웃</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="postTitle">게시글 작성</h2>
+        <form class="write-form">
+            <div class="input-box">
+                <label for="postTitle">제목*</label>
+                <input
+                    type="text"
+                    id="postTitle"
+                    placeholder="제목을 입력해 주세요. (최대 26자)"
+                />
+                <p class="helperText" name="postTitle" id="title-helper"></p>
+            </div>
+            <div class="input-box">
+                <label for="content">내용*</label>
+                <textarea
+                    id="content"
+                    class="content-box"
+                    placeholder="내용을 입력해 주세요."
+                ></textarea>
+                <p class="helperText" name="content" id="content-helper"></p>
+            </div>
+            <div class="input-box">
+                <label class="non-border">이미지</label>
+                <input
+                    class="non-border"
+                    type="file"
+                    id="image"
+                    placeholder="파일을 선택해주세요."
+                    accept="image/*"
+                />
+            </div>
+            <button id="submit" class="purple-button" onclick="submitPost()" disabled>완료</button>
+        </form>
+    </div>
+    <script src="../js/post-write.js"></script>
+</body>
+</html>

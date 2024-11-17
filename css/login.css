@@ -1,0 +1,37 @@
+@import url('../css/global.css');
+
+.login-form{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 40px;
+    background-color: transparent;
+}
+
+/* 비밀번호 수정 페이지에 쓸 거 */
+.toast {
+    visibility: hidden; /* 기본적으로 숨김 */
+    min-width: 50px;
+    background-color: #ACA0eB;
+    color: #fff;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    border-radius: 15px;
+    padding: 10px;
+    position: fixed;
+    left: 50%; /* 중앙 정렬 */
+    bottom: 10px; /* 아래에서의 위치 */
+    font-size: 12px;
+    transition: visibility 0s, opacity 0.5s linear; /* 페이드 효과 */
+    opacity: 0;
+    transform: translateX(-50%);
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+}
