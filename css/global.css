@@ -136,7 +136,7 @@ button.purple-button:disabled {
 }
 
 .email-container .input-box {
-    width: 90%;
+    width: 100%;
     position: relative;
     margin-bottom: 20px;
     background-color: transparent;
