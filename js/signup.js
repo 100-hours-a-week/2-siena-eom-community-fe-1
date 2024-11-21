@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const reader = new FileReader();
           reader.onload = (e) => {
               profileImage.src = e.target.result; // 선택한 이미지로 업데이트
-              inputs.profile.helper.style.display = 'none'; // 파일 선택 시 헬퍼 메시지 숨김
+              inputs.profile.helper.style.display = 'none';
           };
           reader.readAsDataURL(file);
       }
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
               helper.style.color = 'red';
               isEmailValid = false;
           } else {
-              // 유효성 검사 통과 -> 중복 확인 요청
+              // 유효성 검사 통과후에 중복 확인 요청
               try {
                   const response = await fetch(`http://localhost:3001/guest/emailValid?email=${encodeURIComponent(emailValue)}`, {
                       method: 'GET',
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
               helper.style.color = 'red';
               isNicknameValid = false;
           } else {
-              // 유효성 검사 통과 -> 중복 확인 요청
+              // 유효성 검사 통과후에 중복 확인 요청
               try {
                   const response = await fetch(`http://localhost:3001/guest/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
                       method: 'GET',
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
               helper.textContent = '*비밀번호는 8자 이상, 20자 이하이며 대문자, 소문자, 숫자, 특수문자를 각각 포함해야 합니다.';
               helper.style.color = 'red';
           } else {
-              helper.textContent = ''; // 비밀번호 유효성 검사 통과
+              helper.textContent = '';
           }
       }
 
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
               helper.textContent = '*비밀번호가 일치하지 않습니다.';
               helper.style.color = 'red';
           } else {
-              helper.textContent = ''; // 비밀번호 확인 통과
+              helper.textContent = '';
           }
       }
       checkForm();
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
           email: inputs.email.element.value,
           password: inputs.pw.element.value,
           nickname: inputs.nickname.element.value,
-          profile: profileInput.files[0] ? profileImage.src : 'https://default-profile.img'
+          profile: profileInput.files[0] ? profileImage.src : 'http://localhost:3001/images/default-profile.png',
       };
 
       try {

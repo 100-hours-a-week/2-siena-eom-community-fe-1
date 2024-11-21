@@ -80,15 +80,24 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       });
-
+      console.log('요청데이터:', data);
       const result = await response.json();
       console.log('Response:', result);
 
       if (response.ok) {
-        alert('로그인 성공');
-        window.location.href = './post-list.html';
+        if (result.data && result.data.userId) {
+          alert('로그인 성공');
+          const { userId } = result.data;
+          console.log('userId:', userId); // userId 확인
+          sessionStorage.setItem('userId', userId); // 로그인 후 유저 ID 저장
+          window.location.href = './profile-edit.html';
+        } else {
+          console.error('응답에 userId 없음', result);
+        }
+        
       } else if (response.status === 401) {
           if (result.message === 'invalid_account'){
             inputs.email.helper.textContent = '*계정을 찾을 수 없습니다.';

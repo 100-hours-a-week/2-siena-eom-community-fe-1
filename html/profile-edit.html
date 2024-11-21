@@ -10,7 +10,7 @@
     <header>
         <h1 class="title">아무말 대잔치</h1>
         <div class="header-menu-right">
-            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
             <div class="dropdown-menu" id="dropdown-menu">
                 <a href="./profile-edit.html">회원정보 수정</a>
                 <a href="./pw-change.html">비밀번호 수정</a>
@@ -28,7 +28,7 @@
                 <label for="profile">프로필 사진</label>
                 <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
                 <p class="helperText" id="profile-helper"></p>
-                <img class="icon-image" src="../images/profile.png" id="profile-image" alt="프로필 이미지"/>
+                <img class="icon-image" src="../images/default-profile.png" id="profile-image" alt="프로필 이미지"/>
                 
             </div>
 
@@ -62,5 +62,6 @@
     </div>
 
     <script src="../js/profile-edit.js"></script>
+    <script src="../js/header.js"></script>
 </body>
 </html>

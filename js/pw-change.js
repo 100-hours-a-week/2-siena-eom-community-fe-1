@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.change-form');
-    const submitButton = document.querySelector('.blue-button'); // 제출 버튼 선택
+    const submitButton = document.querySelector('.purple-button');
     const toast = document.getElementById('toast');
 
     // 입력 필드와 헬퍼 텍스트 매핑
@@ -14,6 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
             helper: document.getElementById('pwck-helper')
         }
     };
+
+    // 로그인한 사용자 정보 로드
+    const loadUserData = async () => {
+        try {
+            const userId = sessionStorage.getItem('userId');
+
+            if (!userId) {
+                alert('로그인이 필요합니다.');
+                window.location.href = './login.html';
+                return;
+            }
+
+            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                console.error('API 요청 실패:', response.status, response.statusText);
+                alert('사용자 정보를 불러오는데 실패했습니다.');
+                return;
+            }
+
+        } catch (error) {
+            console.error('사용자 정보 로드 중 오류:', error);
+        }
+    };
+    await loadUserData();
+
   
     // 유효성 검사 함수
     function validateInput(input) {
@@ -62,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 폼 제출 시 유효성 검사 수행
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
         let isValid = true;
 
@@ -74,14 +103,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isValid) {
-            // 폼 제출 시 토스트 메시지 표시
-            toast.classList.add('show'); // 'show' 클래스 추가
-            setTimeout(() => {
-                toast.classList.remove('show'); // 'show' 클래스 제거
-            }, 3000); // 3초 후에 숨김
+            try{
+                const userId = sessionStorage.getItem('userId');
+                const newPassword = inputs.pw.element.value;
+
+                const response = await fetch(`http://localhost:3001/users/${userId}/password`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: newPassword }),
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    toast.textContent = '변경 완료';
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 3000);
+                } else {
+                    const result = await response.json();
+                    console.error('비밀번호 변경 실패:', result.message);
+                    toast.textContent = '변경 실패';
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+                }
+            } catch (error) {
+                console.error('비밀번호 변경 요청 중 오류:', error);
+                toast.textContent = '오류발생 ㅈㅅㅈㅅ..';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
         }
-
-
     });
 
 });

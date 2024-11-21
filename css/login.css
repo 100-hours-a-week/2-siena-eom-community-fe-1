@@ -7,6 +7,13 @@
     flex-direction: column;
 }
 
+.change-form{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+}
+
 .input-box {
     position: relative;
     margin-bottom: 40px;
