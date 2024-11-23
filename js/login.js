@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const { userId } = result.data;
           console.log('userId:', userId); // userId 확인
           sessionStorage.setItem('userId', userId); // 로그인 후 유저 ID 저장
-          window.location.href = './profile-edit.html';
+          window.location.href = './post-list.html';
         } else {
           console.error('응답에 userId 없음', result);
         }
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
       } else if (response.status === 400){
         inputs.email.helper.textContent = '*이메일과 비밀번호를 입력해주세요.';
-      } else alert('로그인 실패: 서버에서 문제가 발생했습니당 ㅈㅅㅈㅅ');
+      } else alert('로그인 실패: 서버에서 문제가 발생했습니다.');
     }catch (error) {
         console.error('로그인 요청 중 오류 발생:', error);
         alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
