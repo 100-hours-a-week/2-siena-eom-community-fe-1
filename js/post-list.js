@@ -1,9 +1,23 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-      // JSON 파일 불러오기
-      const response = await fetch("/data/post.json");
-      const data = await response.json();
-      const posts = data.posts; // 게시글 배열
+      // 백엔드 서버에서 JSON 파일 불러오기
+      const response = await fetch("http://localhost:3001/posts");
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      // 응답 디버깅용
+      console.log("API Response:", result);
+      if (!result || !result.data || result.data.length === 0) {
+        console.error("No posts found or invalid response.");
+        alert("게시글이 없습니다.");
+        return;
+      }
+
+      const posts = result.data;
   
       const postListSection = document.querySelector(".PostList");
   
@@ -22,16 +36,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <div class="post-info">
             <div class="post-stats">
-              <span>좋아요 ${post.likeCount}</span>
-              <span>댓글 ${post.commentCount}</span>
-              <span>조회수 ${post.viewCount}</span>
+              <span>좋아요 ${post.like}</span>
+              <span>댓글 ${post.commentsCount}</span>
+              <span>조회수 ${post.view}</span>
             </div>
             <span class="post-date">${post.postDate}</span>
           </div>
           <hr class="divider">
           <div class="post-author">
-            <img src="${post.profile}" alt="프로필 사진" class="author-image">
-            <span class="author-name">${post.author}</span>
+            <img src="${post.authorProfile}" alt="프로필 사진" class="author-image">
+            <span class="author-name">${post.authorNickname}</span>
           </div>
         `;
   

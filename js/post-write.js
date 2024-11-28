@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
 
@@ -78,20 +78,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // URL을 기반으로 작성/수정 구분
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId'); // postId가 있으면 수정 모드
+
+    if (postId) {
+        // 수정 모드: 기존 데이터 로드
+        try {
+            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            const post = result.data;
+
+            // 기존 데이터 폼에 채우기
+            inputs.postTitle.element.value = post.title;
+            inputs.content.element.value = post.content;
+            postImage = post.postImage || null;
+
+            checkForm(); // 폼 상태 확인
+        } catch (error) {
+            console.error('게시글 데이터를 불러오는 중 오류 발생:', error);
+            alert('게시글 데이터를 불러오지 못했습니다.');
+        }
+    }
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        let valid = true;
+        // let valid = true;
 
         const data = {
-            userId: sessionStorage.getItem('userId'),
             title: inputs.postTitle.element.value,
             content: inputs.content.element.value,
             postImage: postImage
         }
 
+        const url = postId
+            ? `http://localhost:3001/posts/${postId}` // 수정 URL
+            : 'http://localhost:3001/posts'; // 작성 URL
+
+        const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
+
         try {
-            const response = await fetch('http://localhost:3001/posts', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -100,11 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                alert('게시글 작성 완료!');
+                // const result = await response.json();
+                alert(postId ? '게시글 수정 완료!' : '게시글 작성 완료!');
                 window.location.href = './post-list.html';
             } else {
                 const result = await response.json();
-                alert(`게시글 작성 실패: ${result.message}`);
+                alert(`작업이 실패하였습니다.: ${result.message}`);
             }
         } catch (error) {
             console.error('Error:', error);

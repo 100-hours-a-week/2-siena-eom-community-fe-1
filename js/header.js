@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
+    const headerTitle = document.getElementById("headerTitle");
 
+    if (headerTitle) {
+        headerTitle.addEventListener("click", () => {
+            window.location.href = "./post-list.html"; // post-list.html로 이동
+        });
+    }
+    
     logoutLink.addEventListener('click', async (event) => {
         event.preventDefault();
 

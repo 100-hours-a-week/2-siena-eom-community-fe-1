@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadUserData = async () => {
         try {
             const userId = sessionStorage.getItem('userId');
-
             if (!userId) {
                 alert('로그인이 필요합니다.');
                 window.location.href = './login.html';
