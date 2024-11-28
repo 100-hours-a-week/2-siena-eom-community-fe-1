@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
+    // 작성자 프로필 절대경로로 설정
     const isAuthor = String(post.author) === userId;
     // console.log('post.authorProfile:', post.authorProfile); //디버깅용
     const authorProfilePath = post.authorProfile?.startsWith("http")
@@ -125,10 +126,12 @@ function renderPost(post, userId) {
         : `http://localhost:3001${post.authorProfile}`;
     // console.log("authorProfilePath:", authorProfilePath); //디버깅용
 
-    const postImagePath = post.postImage?.startsWith("http")
-        ? postImage
-        : `http://localhost:3001${post.postImage}`;
-
+    // 게시글 이미지 절대경로로 설정
+    const postImagePath = post.postImage
+        ? (post.postImage.startsWith("http")
+            ? post.postImage
+            : `http://localhost:3001${post.postImage}`)
+        : null;
 
     postDetail.innerHTML = `
         <div class="post-header">
