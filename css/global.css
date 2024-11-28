@@ -156,6 +156,7 @@ button.purple-button:disabled {
     width: 32px;
     height: 32px;
     cursor: pointer;
+    border-radius: 50%;
 }
 
 .dropdown-menu {

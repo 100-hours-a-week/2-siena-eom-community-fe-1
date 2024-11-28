@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const result = await response.json();
 
-      // 응답 디버깅용
-      console.log("API Response:", result);
       if (!result || !result.data || result.data.length === 0) {
         console.error("No posts found or invalid response.");
         alert("게시글이 없습니다.");
@@ -29,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const postItem = document.createElement("div");
         postItem.classList.add("post-item");
         postItem.setAttribute("postId", post.postId);
+
+        const authorProfilePath = post.authorProfile?.startsWith("http")
+            ? post.authorProfile
+            : `http://localhost:3001${post.authorProfile}`;
   
         postItem.innerHTML = `
           <div class="post-header">
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <hr class="divider">
           <div class="post-author">
-            <img src="${post.authorProfile}" alt="프로필 사진" class="author-image">
+            <img src="${authorProfilePath}" alt="프로필 사진" class="author-image">
             <span class="author-name">${post.authorNickname}</span>
           </div>
         `;

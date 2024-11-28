@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const result = await response.json();
+            // console.log("서버에서 반환된 게시글 데이터:", result); //디버깅용
 
             if (result && result.data) {
                 renderPost(result.data, userId); // 게시글 렌더링
@@ -118,6 +119,16 @@ function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
     const isAuthor = String(post.author) === userId;
+    // console.log('post.authorProfile:', post.authorProfile); //디버깅용
+    const authorProfilePath = post.authorProfile?.startsWith("http")
+        ? post.authorProfile
+        : `http://localhost:3001${post.authorProfile}`;
+    // console.log("authorProfilePath:", authorProfilePath); //디버깅용
+
+    const postImagePath = post.postImage?.startsWith("http")
+        ? postImage
+        : `http://localhost:3001${post.postImage}`;
+
 
     postDetail.innerHTML = `
         <div class="post-header">
@@ -125,7 +136,7 @@ function renderPost(post, userId) {
         </div>
         <div class="post-info">
             <div class="post-author">
-                <img class="profile-icon2" src="${post.authorProfile}" alt="작성자 프로필" />
+                <img class="profile-icon2" src="${authorProfilePath}" alt="작성자 프로필" />
             </div>
             <div class="post-info-2">
                 <span class="author-name">${post.authorNickname}</span>
@@ -147,8 +158,8 @@ function renderPost(post, userId) {
             <section class="body">
                 <div class="content-img">
                 ${
-                    post.postImage
-                        ? `<img src="${post.postImage}" alt="게시글 이미지" />`
+                    postImagePath
+                        ? `<img src="${postImagePath}" alt="게시글 이미지" />`
                         : `<div class="no-image">첨부된 이미지가 없습니다. (;＾◇＾;)ゝ</div>`
                 }
                 </div>
@@ -173,10 +184,14 @@ function renderComments(comments, userId, postId) {
     comments.forEach((comment) => {
         const isAuthor = String(comment.commentAuthor) === String(userId);
 
+        const authorProfilePath = comment.authorProfile?.startsWith("http")
+            ? comment.authorProfile
+            : `http://localhost:3001${comment.authorProfile}`;
+
         const commentItem = `
             <div class="comment-item" id="comment-${comment.commentId}">
                 <div class="comment-author">
-                    <img class="profile-icon2" src="${comment.authorProfile || "../images/default-profile.png"}" alt="작성자 프로필">
+                    <img class="profile-icon2" src="${authorProfilePath || "../images/default-profile.png"}" alt="작성자 프로필">
                 </div>
                 <div class="comment-item-2">
                     <span class="author-name">${comment.authorNickname || "Unknown"}</span>
@@ -301,7 +316,6 @@ function bindLikeButton(post, userId) {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log("서버로부터 받은 데이터:", result); // 디버깅용
                 const isLiked = result.data.likes.includes(userId);
                 console.log(`사용자 ${userId}의 좋아요 상태:`, isLiked); // 디버깅용
                 likeButton.textContent = `좋아요 ${result.data.like}`;

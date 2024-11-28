@@ -190,15 +190,36 @@ document.addEventListener('DOMContentLoaded', () => {
   submitButton.addEventListener('click', async (event) => {
       event.preventDefault();
 
-      const data = {
-          email: inputs.email.element.value,
-          password: inputs.pw.element.value,
-          nickname: inputs.nickname.element.value,
-          profile: profileInput.files[0] ? profileImage.src : 'http://localhost:3001/images/default-profile.png',
-      };
-
       try {
-          const response = await fetch('http://localhost:3001/guest/signup', {
+        let profilePath = 'http://localhost:3001/images/default-profile.png';
+
+        // 프로필 사진 업로드 처리
+        if (profileInput.files[0]) {
+            const formData = new FormData();
+            formData.append('profile', profileInput.files[0]); // 파일 추가
+
+            const uploadResponse = await fetch('http://localhost:3001/guest/profile', {
+                method: 'POST',
+                body: formData, // FormData로 전송
+            });
+
+            if (uploadResponse.ok) {
+                const uploadResult = await uploadResponse.json();
+                profilePath = uploadResult.data.filePath; // 업로드된 파일 경로 가져오기
+            } else {
+                console.error('Profile upload failed:', await uploadResponse.text());
+                alert('프로필 사진 업로드 실패. 기본 이미지가 사용됩니다.');
+            }
+        }
+
+        const data = {
+            email: inputs.email.element.value,
+            password: inputs.pw.element.value,
+            nickname: inputs.nickname.element.value,
+            profile: profilePath,
+        };
+
+        const response = await fetch('http://localhost:3001/guest/signup', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
