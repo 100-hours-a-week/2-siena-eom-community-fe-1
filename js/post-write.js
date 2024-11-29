@@ -1,6 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('write-form');
+document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
+
+    let postImage = null;
 
     const inputs = {
         postTitle: {
@@ -10,12 +12,30 @@ document.addEventListener('DOMContentLoaded', () => {
         content: {
             element: document.getElementById('content'),
             helper: document.getElementById('content-helper')
+        },
+        image: {
+            element: document.getElementById('image')
         }
     };
+
+    // 이미지 파일 읽기
+    inputs.image.element.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                postImage = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
     // 유효성 검사 함수
     function validateInput(input) {
         const { element, helper } = input;
+
+        if (!helper) return;
+
         helper.textContent = ''; // 헬퍼 메시지 초기화
 
         if (element.id === 'postTitle') {
@@ -35,12 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 모든 폼에 입력이 되었는지 확인
+    // 필수 폼에 입력이 되었는지 확인
     function checkForm() {
         let isFormValid = true;
         for (const input of Object.values(inputs)) {
             validateInput(input);
-            if (input.helper.textContent !== '') {
+            if (input.helper && input.helper.textContent !== '') {
                 isFormValid = false;
             }
         }
@@ -49,16 +69,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 각 입력 필드에 이벤트 리스너 추가: 입력이 되면 헬퍼텍스트가 보이도록
     for (const input of Object.values(inputs)) {
-        input.element.addEventListener('input', () => {
-            validateInput(input);
-            checkForm();
-            input.helper.style.display = 'block';
-        });
+        if (input.helper) {
+            input.element.addEventListener('input', () => {
+                validateInput(input);
+                checkForm();
+                input.helper.style.display = 'block';
+            });
+        }
     }
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // 기본 제출 동작 방지
-        let valid = true;
+    // URL을 기반으로 작성/수정 구분
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId'); // postId가 있으면 수정 모드
+
+    if (postId) {
+        // 수정 모드: 기존 데이터 로드
+        try {
+            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            const post = result.data;
+
+            // 기존 데이터 폼에 채우기
+            inputs.postTitle.element.value = post.title;
+            inputs.content.element.value = post.content;
+            postImage = post.postImage || null;
+
+            checkForm(); // 폼 상태 확인
+        } catch (error) {
+            console.error('게시글 데이터를 불러오는 중 오류 발생:', error);
+            alert('게시글 데이터를 불러오지 못했습니다.');
+        }
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        // let valid = true;
+
+        const data = {
+            title: inputs.postTitle.element.value,
+            content: inputs.content.element.value,
+            postImage: postImage
+        }
+
+        const url = postId
+            ? `http://localhost:3001/posts/${postId}` // 수정 URL
+            : 'http://localhost:3001/posts'; // 작성 URL
+
+        const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
+
+        try {
+            const postImage = inputs.image.element.files[0];
+            if (postImage) {
+                const formData = new FormData();
+                formData.append('postImage', postImage);
+
+                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImg`,
+                    {
+                        method: 'POST',
+                        body: formData,
+                });
+                if (uploadResponse.ok) {
+                    const uploadResult = await uploadResponse.json();
+                    imagePath = uploadResult.data.filePath; // 업로드된 파일 경로 가져오기
+                    console.log('이미지 업로드 성공:', imagePath);
+                } else {
+                    console.error('이미지 업로드 실패:', await uploadResponse.text());
+                    alert('게시글 사진 업로드 실패');
+                    return; // 이미지 업로드 실패 시 게시글 저장을 중단
+                }
+
+            }
+
+            // 업로드된 이미지 경로를 데이터에 포함
+            if (imagePath) {
+                data.postImage = imagePath;
+            }
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                // const result = await response.json();
+                alert(postId ? '게시글 수정 완료!' : '게시글 작성 완료!');
+                window.location.href = './post-list.html';
+            } else {
+                const result = await response.json();
+                alert(`작업이 실패하였습니다.: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     
         // 각 입력 필드에 대해 유효성 검사 수행
         for (const input of Object.values(inputs)) {
@@ -72,9 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             form.submit(); 
         }
     });
-    for (const input of Object.values(inputs)) {
-        input.helper.style.display = 'none';  // 헬퍼 텍스트를 숨김
-    }
 
     checkForm();
 });

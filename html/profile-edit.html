@@ -8,9 +8,9 @@
 </head>
 <body>
     <header>
-        <h1 class="title">아무말 대잔치</h1>
+        <h1 class="title" id="headerTitle">아무말 대잔치</h1>
         <div class="header-menu-right">
-            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
             <div class="dropdown-menu" id="dropdown-menu">
                 <a href="./profile-edit.html">회원정보 수정</a>
                 <a href="./pw-change.html">비밀번호 수정</a>
@@ -28,7 +28,7 @@
                 <label for="profile">프로필 사진</label>
                 <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
                 <p class="helperText" id="profile-helper"></p>
-                <img class="icon-image" src="../images/profile.png" id="profile-image" alt="프로필 이미지"/>
+                <img class="icon-image" src="../images/default-profile.png" id="profile-image" alt="프로필 이미지"/>
                 
             </div>
 
@@ -53,7 +53,7 @@
     <div id="confirmModal" class="modal">
         <div class="modal-content">
             <h2>회원탈퇴 하시겠습니까?</h2>
-            <p>작성된 게시글과 댓글은 삭제됩니다.</p>
+            <p>작성된 게시글과 댓글은 삭제되지않습니다.</p>
             <div class="modal-buttons">
                 <button onclick="closeModal()" class="modal-cancel">취소</button>
                 <button onclick="confirmDeletion()" class="modal-confirm">확인</button>
@@ -62,5 +62,6 @@
     </div>
 
     <script src="../js/profile-edit.js"></script>
+    <script src="../js/header.js"></script>
 </body>
 </html>

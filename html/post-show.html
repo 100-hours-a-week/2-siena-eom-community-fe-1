@@ -13,9 +13,9 @@
                 <img class="backspace" src="../images/backspace.png"/>
             </a>
         </div>
-        <h1 class="title">아무말 대잔치</h1>
+        <h1 class="title" id="headerTitle">아무말 대잔치</h1>
         <div class="header-menu-right">
-            <img src="../images/profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
             <div class="dropdown-menu" id="dropdown-menu">
                 <a href="./profile-edit.html">회원정보 수정</a>
                 <a href="./pw-change.html">비밀번호 수정</a>
@@ -32,14 +32,14 @@
             </div>
             <div class="post-info">
                 <div class="post-author">
-                    <img class="profile-icon2" src="../images/profileEX.jpeg" alt="작성자 프로필" />
+                    <img class="profile-icon2" src="../images/user.png" alt="작성자 프로필" />
                 </div>
                 <div class="post-info-2">
                     <span class="author-name">더미 작성자 1</span>
                     <span class="post-date">2021-01-01 00:00:00</span>    
                 </div>
                 <div class="buttons">
-                    <button type="button" id="PostEditBtn" onclick="location.href='./post-edit.html'">수정</button>
+                    <button type="button" id="PostEditBtn">수정</button>
                     <button type="button" id="PostDeleteBtn" onclick="showConfirmModal('post')">삭제</button>
                 </div>
             </div>
@@ -49,7 +49,7 @@
             <article>
                 <section class="body">
                     <div class="content-img">
-                        <img src="image.png" alt="게시글 이미지" />
+                        <img id="no-image" alt="첨부된 이미지가 없습니다. (;＾◇＾;)ゝ" />
                     </div>
                     <article class="content">무엇을 얘기할까요? 아무말이라면, 삶은 항상 놀라운 모험이라고 생각합니다. 우리는 매일 새로운 경험을 하고 배우며 성장합니다. 때로는 어려움과 도전이 있지만, 그것들이 우리를 더 강하고 지혜롭게 만듭니다. 또한 우리는 주변의 사람들과 연결되며 사랑과 지지를 받습니다. 그래서 우리의 삶은 소중하고 의미가 있습니다.<br/>
                         자연도 아름다운 이야기입니다. 우리 주변의 자연은 끝없는 아름다움과 신비로움을 담고 있습니다. 산, 바다, 숲, 하늘 등 모든 것이 우리를 놀라게 만들고 감동시킵니다. 자연은 우리의 생명과 안정을 지키며 우리에게 힘을 주는 곳입니다.<br/>
@@ -59,7 +59,7 @@
                 </section>
                 <hr class="horizontal-rule"/>
                 <div class="stats">
-                    <div class="like-count">
+                    <div class="like-count" id="like">
                         <h3>123</h3>
                         <p>좋아요</p>
                     </div>
@@ -88,15 +88,15 @@
 
                 <div class="comment-item">
                     <div class="comment-author">
-                        <img class="profile-icon3" src="../images/imessage.png" alt="작성자 프로필" />
+                        <img class="profile-icon2" src="../images/imessage.png" alt="작성자 프로필" />
                     </div>
                     <div class="comment-item-2">
                         <span class="author-name">더미 작성자 1</span>
                         <span class="post-date">2021-01-01 00:00:00</span>
                     </div>
                     <div class="buttons">
-                        <button type="button" id="CommentEditBtn">수정</button>
-                        <button type="button" id="CommentDeleteBtn" onclick="showConfirmModal('comment')">삭제</button>
+                        <button id="CommentEditBtn">수정</button>
+                        <button id="CommentDeleteBtn" onclick="showConfirmModal('comment')">삭제</button>
                     </div>
                 </div>
                 <div class="comment-content">
@@ -105,21 +105,21 @@
 
                 <div class="comment-item">
                     <div class="comment-author">
-                        <img class="profile-icon3" src="../images/imessage.png" alt="작성자 프로필" />
+                        <img class="profile-icon2" src="../images/imessage.png" alt="작성자 프로필" />
                     </div>
                     <div class="comment-item-2">
                         <span class="author-name">더미 작성자 2</span>
                         <span class="post-date">2021-01-01 00:00:00</span>
                     </div>
-            
                 </div>
+
                 <div class="comment-content">
                     <p>댓글을 길게쓰면 어떻게되나 궁금해서 길게쓰는 중입니다. p태그를 사용했는데, 줄바꿈이 잘 될런지요?</p>
                 </div>
 
                 <div class="comment-item">
                     <div class="comment-author">
-                        <img class="profile-icon3" src="../images/imessage.png" alt="작성자 프로필" />
+                        <img class="profile-icon2" src="../images/imessage.png" alt="작성자 프로필" />
                     </div>
                     <div class="comment-item-2">
                         <span class="author-name">더미 작성자 3</span>
@@ -159,5 +159,6 @@
         </div>
 
         <script src="../js/post-show.js"></script>
+        <script src="../js/header.js"></script>
     </body>
 </html>

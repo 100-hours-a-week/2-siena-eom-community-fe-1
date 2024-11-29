@@ -1,47 +1,84 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.edit-form'); // 폼 요소 선택
-    const submitButton = document.querySelector('.purple-button');
+document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.querySelector('.edit-form');
+    // const submitButton = document.querySelector('.purple-button'); // 비활성화 없앰..
     const profileImage = document.getElementById('profile-image');
     const profileInput = document.getElementById('profile');
     const toast = document.getElementById('toast');
+    const emailElement = document.getElementById('user-email');
 
-    // 헬퍼텍스트 기능을 위해 입력 필드와 헬퍼 텍스트 매핑
+    let newProfile = null;
+    let initNickname = '';
+
+    // 헬퍼 텍스트와 입력 필드 매핑
     const inputs = {
         profile: {
-            element: document.getElementById('profile'),
-            helper: document.getElementById('profile-helper')
+            element: profileInput,
+            helper: document.getElementById('profile-helper'),
         },
         nickname: {
             element: document.getElementById('nickname'),
-            helper: document.getElementById('nickname-helper')
-        }
+            helper: document.getElementById('nickname-helper'),
+        },
     };
 
     inputs.profile.helper.textContent = '*프로필 사진을 선택하지 않으시면 기본 이미지로 설정됩니다.';
     inputs.profile.helper.style.display = 'block';
+
+    // 로그인한 사용자 정보 로드
+    const loadUserData = async () => {
+        try {
+            const userId = sessionStorage.getItem('userId');
+            if (!userId) {
+                alert('로그인이 필요합니다.');
+                window.location.href = './login.html';
+                return;
+            }
+
+            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                console.error('API 요청 실패:', response.status, response.statusText);
+                alert('사용자 정보를 불러오는데 실패했습니다.');
+                return;
+            }
+
+            const userData = await response.json();
+            emailElement.textContent = userData.email;
+            inputs.nickname.element.value = userData.nickname;
+            initNickname = userData.nickname; // 닉네임 초기값 저장
+            if (userData.profile) {
+                profileImage.src = userData.profile;
+            }
+        } catch (error) {
+            console.error('사용자 정보 로드 중 오류:', error);
+        }
+    };
+    await loadUserData();
 
     // 프로필 이미지를 클릭하면 파일 선택 창을 엶
     profileImage.addEventListener('click', () => {
         profileInput.click();
     });
 
-    // 파일을 선택하면 미리보기 이미지 업데이트
-    profileInput.addEventListener('change', (event) => {
+    // 파일 선택 시 미리보기 업데이트 및 API 호출
+    profileInput.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = (e) => {
-                profileImage.src = e.target.result; // 선택한 이미지로 업데이트
-                inputs.profile.helper.style.display = 'none'; // 파일 선택 시 헬퍼 메시지 숨김
+            reader.onload = async (e) => {
+                profileImage.src = e.target.result; // 선택한 이미지 미리보기
+                newProfile = e.target.result;
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // 유효성 검사 함수
-    function validateInput(input) {
+    // 닉네임 유효성 검사 함수
+    const validateInput = async (input) => {
         const { element, helper } = input;
-
         helper.textContent = '';
 
         if (element.id === 'nickname') {
@@ -52,78 +89,121 @@ document.addEventListener('DOMContentLoaded', () => {
                 helper.textContent = '*띄어쓰기를 없애주세요.';
             } else if (nicknameValue.length > 10) {
                 helper.textContent = '*닉네임은 최대 10자까지 작성 가능합니다.';
+            } else if (nicknameValue !== initNickname) {
+                // 중복 확인 API 호출
+                const userId = sessionStorage.getItem('userId');
+                try {
+                    const response = await fetch(`http://localhost:3001/users/${userId}/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
+                        method: 'GET',
+                        credentials: 'include',
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.message === 'nickname_available') {
+                        helper.textContent = '';
+                    } else if (response.status === 409) {
+                        helper.textContent = '*이미 사용중인 닉네임입니다.';
+                    } else if (response.status === 400) {
+                        helper.textContent = '*유효하지 않은 요청입니다.';
+                    }
+                } catch (error) {
+                    console.error('닉네임 중복 확인 요청 오류:', error);
+                }
             }
         }
-    }
+    };
 
-    // 유효성 검사 확인 함수
-    function checkForm() {
-        let isFormValid = true;
-        for (const inputKey in inputs) {
-          if (inputKey !== 'profile'){
-            const input = inputs[inputKey];
-            validateInput(input);
-            if (input.helper.textContent !== '') {
-              isFormValid = false;
+    // 수정완료 버튼 이벤트 등록
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const userId = sessionStorage.getItem('userId');
+        const nickname = inputs.nickname.element.value;
+        const updatePromises = [];
+
+        // 프로필 사진 변경 요청
+        if (newProfile) {
+            updatePromises.push(
+                fetch(`http://localhost:3001/users/${userId}/profile`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profile: newProfile }),
+                    credentials: 'include',
+                })
+            );
+        }
+
+        // 닉네임 변경 요청
+        if (nickname !== initNickname) {
+            updatePromises.push(
+                fetch(`http://localhost:3001/users/${userId}/nickname`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nickname }),
+                    credentials: 'include',
+                })
+            );
+        }
+
+        try {
+            const results = await Promise.all(updatePromises);
+
+            let allSuccess = true;
+            for (const response of results) {
+                if (!response.ok) {
+                    allSuccess = false;
+                    const result = await response.json();
+                    console.error('요청 실패:', result.message);
+                }
             }
-          }
-        }
-        submitButton.disabled = !isFormValid;
-      }
 
-    // 입력이 변경될 때마다 유효성 검사
-    for (const inputKey in inputs) {
-      
-        if (inputKey !== 'profile'){
-          const input = inputs[inputKey];
-          input.element.addEventListener('input', () => {
-            validateInput(input);
-            checkForm();
-            input.helper.style.display = 'block';
-          });
-        }
-    }
-
-    // 하나의 submit 이벤트 리스너로 통합
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // 기본 제출 동작 방지
-        let isValid = true;
-
-        // 각 입력 필드에 대해 유효성 검사 수행
-        for (const input of Object.values(inputs)) {
-            validateInput(input);
-            if (input.helper.textContent !== '') {
-                isValid = false;
+            if (allSuccess) {
+                toast.textContent = '수정완료';
+            } else {
+                toast.textContent = '수정실패';
             }
-        }
 
-        if (isValid) {
-            // 폼 제출 시 토스트 메시지 표시
-            toast.classList.add('show'); // 'show' 클래스 추가
-            setTimeout(() => {
-                toast.classList.remove('show'); // 'show' 클래스 제거
-            }, 3000); // 3초 후에 숨김
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        } catch (error) {
+            console.error('변경 요청 중 오류:', error);
         }
     });
 
-    // 모든 입력 필드에 대한 초기 헬퍼 텍스트 표시
-    checkForm();
+    inputs.nickname.element.addEventListener('input', () => {
+        validateInput(inputs.nickname);
+    });
 
+    // 모달 열기/닫기 및 삭제 확인
+    window.showConfirmModal = () => {
+        document.getElementById('confirmModal').style.display = 'flex';
+    };
+
+    window.closeModal = () => {
+        document.getElementById('confirmModal').style.display = 'none';
+    };
+
+    window.confirmDeletion = async () => {
+        const userId = sessionStorage.getItem('userId');
+
+        try {
+            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
     
+            if (response.ok) {
+                alert('회원 탈퇴가 완료되었습니다.');
+                sessionStorage.clear();
+                window.location.href = './login.html';
+            } else {
+                const result = await response.json();
+                console.error('회원 탈퇴 실패:', result.message);
+                alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
+            }
+        } catch (error) {
+            console.error('회원 탈퇴 요청 중 오류:', error);
+            alert('회원 탈퇴 처리 중 오류발생 ㅈㅅㅈㅅ');
+        }
+    };
 });
-
-// 모달 열기
-function showConfirmModal() {
-    document.getElementById("confirmModal").style.display = "flex";
-}
-
-// 모달 닫기
-function closeModal() {
-    document.getElementById("confirmModal").style.display = "none";
-}
-
-// 확인 버튼 클릭 시 실행되는 함수
-function confirmDeletion() {
-    // login.html로 이동
-    window.location.href = "/login.html";
-}

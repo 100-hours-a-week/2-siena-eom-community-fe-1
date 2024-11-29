@@ -3,12 +3,12 @@
 .message {
     margin-top: 30px;
     margin-bottom: 10px;
-    text-align: center; /* 텍스트 가운데 정렬 */
-    font-size: 23px; /* 폰트 크기 설정 */
+    text-align: center;
+    font-size: 23px;
 }
 
 .bold {
-    font-weight: bold; /* 볼드체 설정 */
+    font-weight: bold;
 }
 
 button {
@@ -36,7 +36,7 @@ button {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px #ccc;
 }
 
 .post-header {
@@ -70,7 +70,7 @@ button {
 
 .divider {
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #ccc;
     margin: 15px 0;
 }
 
@@ -84,7 +84,7 @@ button {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
-    background-color: #ccc; /* 이미지 대체 색상 */
+    background-color: #ddd;
 }
 
 .author-name {

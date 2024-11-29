@@ -59,31 +59,56 @@ document.addEventListener('DOMContentLoaded', () => {
   for (const input of Object.values(inputs)) {
     input.element.addEventListener('input', () => {
       validateInput(input);
-      checkForm(); // 유효성 검사 후 버튼 상태 업데이트
+      checkForm();
     });
   }
 
   loginButton.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch('/data/user.json'); // JSON 파일을 서버 응답으로 사용
-      const users = await response.json();
-      const email = inputs.email.element.value;
-      const password = inputs.pw.element.value;
-      const user = users.find(user => user.email === email);
+    const email = inputs.email.element.value;
+    const password = inputs.pw.element.value;
 
-      if (user) {
-        if (user.password === password){
+    const data = {
+      email,
+      password
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/guest/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        credentials: 'include'
+      });
+      console.log('요청데이터:', data);
+      const result = await response.json();
+      console.log('Response:', result);
+
+      if (response.ok) {
+        if (result.data && result.data.userId) {
           alert('로그인 성공');
+          const { userId } = result.data;
+          console.log('userId:', userId); // userId 확인
+          sessionStorage.setItem('userId', userId); // 로그인 후 유저 ID 저장
           window.location.href = './post-list.html';
         } else {
-        inputs.pw.helper.textContent = '*비밀번호가 올바르지 않습니다.';
+          console.error('응답에 userId 없음', result);
         }
-      } else {
-        inputs.email.helper.textContent = '*계정을 찾을 수 없습니다.'
-        } 
-      } catch (error) {
+        
+      } else if (response.status === 401) {
+          if (result.message === 'invalid_account'){
+            inputs.email.helper.textContent = '*계정을 찾을 수 없습니다.';
+            inputs.email.helper.style.display = 'block';
+          } else if (result.message === 'invalid_password'){
+              inputs.pw.helper.textContent = '*비밀번호가 올바르지 않습니다.';
+            }
+      } else if (response.status === 400){
+        inputs.email.helper.textContent = '*이메일과 비밀번호를 입력해주세요.';
+      } else alert('로그인 실패: 서버에서 문제가 발생했습니다.');
+    }catch (error) {
         console.error('로그인 요청 중 오류 발생:', error);
         alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
       }
