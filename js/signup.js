@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
               helper.style.color = 'red';
               isNicknameValid = false;
           } else {
-              // 유효성 검사 통과후에 중복 확인 요청
               try {
                   const response = await fetch(`http://localhost:3001/guest/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
                       method: 'GET',

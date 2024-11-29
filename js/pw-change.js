@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 폼 유효성 검사 함수
-    function checkFormValidity() {
+    function checkForm() {
         let isFormValid = true;
         for (const input of Object.values(inputs)) {
             validateInput(input);
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     for (const input of Object.values(inputs)) {
         input.element.addEventListener('input', () => {
             validateInput(input);
-            checkFormValidity();
+            checkForm();
         });
     }
 
@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 setTimeout(() => toast.classList.remove('show'), 3000);
             }
         }
+        
     });
-
+    checkForm();
 });
