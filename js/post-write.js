@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const formData = new FormData();
                 formData.append('postImage', postImage);
 
-                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImg`,
+                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImage`,
                     {
                         method: 'POST',
                         body: formData,
