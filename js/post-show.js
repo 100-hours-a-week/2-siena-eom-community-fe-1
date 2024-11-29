@@ -127,11 +127,7 @@ function renderPost(post, userId) {
     // console.log("authorProfilePath:", authorProfilePath); //디버깅용
 
     // 게시글 이미지 절대경로로 설정
-    const postImagePath = post.postImage
-        ? (post.postImage.startsWith("http")
-            ? post.postImage
-            : `http://localhost:3001${post.postImage}`)
-        : null;
+    const postImagePath = post.postImage;
 
     postDetail.innerHTML = `
         <div class="post-header">

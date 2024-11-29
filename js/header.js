@@ -27,11 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // 프로필 경로 설정
-        const profilePath = result.profile && result.profile.startsWith("http")
-            ? result.profile
-            : result.profile
-            ? `http://localhost:3001${result.data.profile}`
-            : "../images/default-profile.png";
+        const profilePath = result.profile;
         profileIcon.src = profilePath;
 
     } catch (error) {

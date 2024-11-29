@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.edit-form');
-    // const submitButton = document.querySelector('.purple-button'); // 비활성화 없앰..
     const profileImage = document.getElementById('profile-image');
     const profileInput = document.getElementById('profile');
     const toast = document.getElementById('toast');
     const emailElement = document.getElementById('user-email');
 
-    let newProfile = null;
     let initNickname = '';
 
     // 헬퍼 텍스트와 입력 필드 매핑
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
     };
 
-    inputs.profile.helper.textContent = '*프로필 사진을 선택하지 않으시면 기본 이미지로 설정됩니다.';
+    inputs.profile.helper.textContent = '*프로필 사진이 선택되지 않으면 기본 이미지로 설정됩니다.';
     inputs.profile.helper.style.display = 'block';
 
     // 로그인한 사용자 정보 로드
@@ -64,17 +62,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // 파일 선택 시 미리보기 업데이트 및 API 호출
+    // profileInput.addEventListener('change', async (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = async (e) => {
+    //             profileImage.src = e.target.result; // 선택한 이미지 미리보기
+    //             newProfile = e.target.result;
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // });
     profileInput.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                profileImage.src = e.target.result; // 선택한 이미지 미리보기
-                newProfile = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append('profile', file);
+
+            try {
+                const userId = sessionStorage.getItem('userId');
+                const uploadResponse = await fetch(`http://localhost:3001/users/${userId}/profile`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include',
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('프로필 사진 업로드 실패');
+                }
+
+                const uploadResult = await uploadResponse.json();
+                profilePath = uploadResult.data.filePath; // 서버에서 받은 프로필 경로
+                profileImage.src = profilePath; // 미리보기 업데이트
+            } catch (error) {
+                console.error('프로필 업로드 중 오류:', error);
+                alert('프로필 사진 업로드에 실패했습니다.');
+            }
         }
     });
+
 
     // 닉네임 유효성 검사 함수
     const validateInput = async (input) => {
@@ -121,13 +147,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nickname = inputs.nickname.element.value;
         const updatePromises = [];
 
-        // 프로필 사진 변경 요청
-        if (newProfile) {
+        // // 프로필 사진 변경 요청
+        // if (newProfile) {
+        //     updatePromises.push(
+        //         fetch(`http://localhost:3001/users/${userId}/profile`, {
+        //             method: 'PUT',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ profile: newProfile }),
+        //             credentials: 'include',
+        //         })
+        //     );
+        // }
+        // 프로필 경로 업데이트
+        if (profilePath) {
             updatePromises.push(
                 fetch(`http://localhost:3001/users/${userId}/profile`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ profile: newProfile }),
+                    body: JSON.stringify({ profile: profilePath }),
                     credentials: 'include',
                 })
             );

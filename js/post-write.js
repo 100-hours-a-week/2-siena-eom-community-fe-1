@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
 
-    let postImage = null;
+    let imagePath = null;
 
     const inputs = {
         postTitle: {
@@ -111,12 +111,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        // let valid = true;
 
         const data = {
             title: inputs.postTitle.element.value,
             content: inputs.content.element.value,
-            postImage: postImage
+            postImage: imagePath,
         }
 
         const url = postId
@@ -126,12 +125,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
 
         try {
-            const postImage = inputs.image.element.files[0];
-            if (postImage) {
+            const postImageFile = inputs.image.element.files[0];
+            if (postImageFile) {
                 const formData = new FormData();
-                formData.append('postImage', postImage);
+                formData.append('postImage', postImageFile);
 
-                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImg`,
+                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImage`,
                     {
                         method: 'POST',
                         body: formData,
@@ -140,17 +139,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const uploadResult = await uploadResponse.json();
                     imagePath = uploadResult.data.filePath; // 업로드된 파일 경로 가져오기
                     console.log('이미지 업로드 성공:', imagePath);
+                    data.postImage = imagePath; // 업로드된 이미지를 데이터에 포함
                 } else {
                     console.error('이미지 업로드 실패:', await uploadResponse.text());
                     alert('게시글 사진 업로드 실패');
                     return; // 이미지 업로드 실패 시 게시글 저장을 중단
                 }
 
-            }
-
-            // 업로드된 이미지 경로를 데이터에 포함
-            if (imagePath) {
-                data.postImage = imagePath;
             }
 
             const response = await fetch(url, {
