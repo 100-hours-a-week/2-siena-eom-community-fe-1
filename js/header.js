@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) {
             console.error("로그인된 사용자 정보가 없습니다.");
+            profileIcon.src = "../images/default-profile.png";
+            logoutLink.addEventListener('click', async (event) => {
+                event.preventDefault();
+                alert('로그인되어 있지 않습니다. 로그인 페이지로 이동합니다.');
+                window.location.href = './login.html';
+            });
             return;
         }
 
@@ -27,8 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // 프로필 경로 설정
-        const profilePath = result.profile;
-        profileIcon.src = profilePath;
+        profileIcon.src = result.profile;
 
     } catch (error) {
         console.error("프로필 이미지를 불러오는 중 오류가 발생했습니다:", error);
@@ -50,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 credentials: 'include',
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 alert('로그아웃 되었습니다.');
                 sessionStorage.clear();
                 window.location.href = './login.html';
@@ -63,5 +68,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('로그아웃 요청 중 오류:', error);
             alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
-    });
+    })
 });

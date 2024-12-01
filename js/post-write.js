@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let imagePath = null;
 
+    const userId = sessionStorage.getItem('userId');
+            if (!userId) {
+                alert('로그인이 필요합니다.');
+                window.location.href = './login.html';
+                return;
+            }
+
     const inputs = {
         postTitle: {
             element: document.getElementById('postTitle'),

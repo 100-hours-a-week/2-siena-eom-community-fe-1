@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const postId = urlParams.get("postId");
     const commentId = urlParams.get("commentId");
 
+    if (!userId) {
+        alert('로그인이 필요합니다.');
+        window.location.href = './login.html';
+        return;
+    }
+    
     if (commentId) {
         // 댓글 수정 모드: 기존 데이터 로드
         try {
