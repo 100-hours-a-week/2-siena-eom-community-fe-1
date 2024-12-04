@@ -65,8 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
               // 유효성 검사 통과후에 중복 확인 요청
               try {
-                  const response = await fetch(`http://localhost:3001/guest/emailValid?email=${encodeURIComponent(emailValue)}`, {
-                      method: 'GET',
+                  const response = await fetch('http://localhost:3001/guest/emailValid', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ email: emailValue }),
                   });
 
                   const result = await response.json();
@@ -178,13 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.disabled = !(isFormValid && isEmailValid && isNicknameValid);
   }
 
-  // 입력 이벤트 등록
+  // 포커스아웃 이벤트 등록
   for (const inputKey in inputs) {
       if (inputKey !== 'profile') {
           const input = inputs[inputKey];
-          input.element.addEventListener('input', () => validateAndCheck(input));
+          input.element.addEventListener('blur', () => validateAndCheck(input));
       }
   }
+
 
   submitButton.addEventListener('click', async (event) => {
       event.preventDefault();
