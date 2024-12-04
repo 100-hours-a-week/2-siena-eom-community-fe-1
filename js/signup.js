@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 유효성 검사 및 중복 확인 통합
   async function validateAndCheck(input) {
       const { element, helper } = input;
+      const email = inputs.email.element.value;
 
       if (element.id === 'email') {
           const emailValue = element.value.trim();
@@ -65,8 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
               // 유효성 검사 통과후에 중복 확인 요청
               try {
-                  const response = await fetch(`http://localhost:3001/guest/emailValid?email=${encodeURIComponent(emailValue)}`, {
-                      method: 'GET',
+                  const response = await fetch('http://localhost:3001/guest/emailValid', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ email: emailValue }),
                   });
 
                   const result = await response.json();
