@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 유효성 검사 및 중복 확인 통합
   async function validateAndCheck(input) {
       const { element, helper } = input;
-      const email = inputs.email.element.value;
 
       if (element.id === 'email') {
           const emailValue = element.value.trim();
@@ -183,13 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.disabled = !(isFormValid && isEmailValid && isNicknameValid);
   }
 
-  // 입력 이벤트 등록
+  // 포커스아웃 이벤트 등록
   for (const inputKey in inputs) {
       if (inputKey !== 'profile') {
           const input = inputs[inputKey];
-          input.element.addEventListener('input', () => validateAndCheck(input));
+          input.element.addEventListener('blur', () => validateAndCheck(input));
       }
   }
+
 
   submitButton.addEventListener('click', async (event) => {
       event.preventDefault();
