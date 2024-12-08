@@ -88,6 +88,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 게시글 데이터 불러오기
     if (postId) {
         try {
+            await increaseView(postId);
+
             const response = await fetch(`http://localhost:3001/posts/${postId}`, {
                 method: "GET",
                 headers: {
@@ -119,6 +121,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         postDetail.innerHTML = "<p>유효하지 않은 요청입니다.</p>";
     }
 });
+
+// 조회수 증가 API 호출 함수
+async function increaseView(postId) {
+    try {
+        const response = await fetch(`http://localhost:3001/posts/${postId}/viewCount`, {
+            method: "POST",
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            console.error("조회수 증가 실패:", response.statusText);
+        }
+    } catch (error) {
+        console.error("조회수 증가 요청 중 오류:", error);
+    }
+}
 
 // 게시글 렌더링 함수
 function renderPost(post, userId) {
