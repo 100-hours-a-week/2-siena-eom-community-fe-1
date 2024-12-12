@@ -252,6 +252,29 @@ function renderComments(comments, userId, postId) {
 
 // 댓글 목록 로드 함수
 async function loadComments(postId) {
+    const commentCount = document.querySelector(".comment-count");
+
+    // 서버에서 댓글 상태 동기화
+    const updateCommentsCount = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+                method: "GET",
+                credentials: "include",
+            });
+            if (response.ok) {
+                const result = await response.json();
+                commentCount.textContent = `댓글 ${result.data.commentsCount}`;
+            } else {
+                console.error("댓글 상태 동기화 실패");
+            }
+        } catch (error) {
+            console.error("댓글 상태 동기화 중 오류:", error);
+        }
+    };
+
+    updateCommentsCount();
+
+
     try {
         const response = await fetch(`http://localhost:3001/posts/${postId}/comments`, {
             method: "GET",
@@ -261,6 +284,8 @@ async function loadComments(postId) {
         if (response.ok) {
             const result = await response.json();
             console.log("댓글 API 응답 데이터:", result); // 디버깅용
+            console.log("댓글 개수:", result.data.length); // 디버깅용
+            // post.commentsCount = result.data.length;
             renderComments(result.data, sessionStorage.getItem("userId"), postId);
         } else {
             console.error("댓글 로드 실패:", await response.text());
@@ -332,8 +357,9 @@ async function handleCommentDelete(commentId) {
         });
 
         if (response.ok) {
-            alert("댓글이 삭제되었습니다.");
-            window.location.reload();
+            await loadComments(postId);
+            // alert("댓글이 삭제되었습니다.");
+            // window.location.reload();
         } else {
             const errorResult = await response.json();
             alert("댓글 삭제 실패");
