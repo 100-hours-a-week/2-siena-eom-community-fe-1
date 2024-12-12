@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const emailElement = document.getElementById('user-email');
 
     let initNickname = '';
+    let profilePath = '';
 
     // 헬퍼 텍스트와 입력 필드 매핑
     const inputs = {
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             emailElement.textContent = userData.email;
             inputs.nickname.element.value = userData.nickname;
             initNickname = userData.nickname; // 닉네임 초기값 저장
+            profilePath = userData.profile;
             if (userData.profile) {
                 profileImage.src = userData.profile;
             }
@@ -207,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    inputs.nickname.element.addEventListener('input', () => {
+    inputs.nickname.element.addEventListener('blur', () => {
         validateInput(inputs.nickname);
     });
 
