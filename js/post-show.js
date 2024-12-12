@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // URL에서 postId, commentId 읽기
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("postId");
-    const commentId = urlParams.get("commentId");
+    let commentId = urlParams.get("commentId");
 
     if (!userId) {
         alert('로그인이 필요합니다.');
@@ -39,14 +39,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             commentButton.textContent = "댓글 수정";
         } catch (error) {
             console.error("댓글 데이터를 불러오는 중 오류 발생:", error);
-            alert("댓글 데이터를 불러오지 못했습니다.");
+            // alert("댓글 데이터를 불러오지 못했습니다.");
         }
     }
 
     // 댓글 작성 및 수정 이벤트
     commentButton.addEventListener("click", async () => {
         const commentContent = commentTextarea.value.trim();
-
         if (!commentContent) {
             alert("댓글 내용을 입력해주세요.");
             return;
@@ -69,8 +68,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (response.ok) {
-                alert(commentId ? "댓글이 수정되었습니다." : "댓글이 작성되었습니다.");
-                window.location.href = `./post-show.html?postId=${postId}`; // 댓글 작성/수정 완료 후 게시글로 이동
+                await loadComments(postId);
+                commentTextarea.value = "";
+                commentButton.textContent = "댓글 작성";
+                commentId = null;
+                console.log('댓글아이디:',commentId) //디버깅용
+                // alert(commentId ? "댓글이 수정되었습니다." : "댓글이 작성되었습니다.");
+                // window.location.reload();
             } else {
                 const errorResult = await response.json();
                 console.error(
@@ -81,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (error) {
             console.error("작업 중 오류 발생:", error);
-            alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
+            // alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     });
 
@@ -103,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const result = await response.json();
-            // console.log("서버에서 반환된 게시글 데이터:", result); //디버깅용
+            console.log("서버에서 반환된 게시글 데이터:", result); //디버깅용
 
             if (result && result.data) {
                 renderPost(result.data, userId); // 게시글 렌더링
@@ -190,7 +194,7 @@ function renderPost(post, userId) {
             </section>
             <hr class="horizontal-rule"/>
             <div class="stats">
-                <div class="like-count">좋아요 ${post.like}</div>
+                <div class="like-count">좋아요 ${post.likeCount}</div>
                 <div class="view-count">조회수 ${post.view}</div>
                 <div class="comment-count">댓글 ${post.commentsCount}</div>
             </div>
@@ -230,7 +234,7 @@ function renderComments(comments, userId, postId) {
                 </div>
             </div>
             <div class="comment-content">
-                <p>${comment.commentContent}</p>
+                <p>${comment.content}</p>
             </div>
         `;
         commentList.insertAdjacentHTML("beforeend", commentItem);
@@ -244,6 +248,26 @@ function renderComments(comments, userId, postId) {
             showConfirmModal("comment", commentId);
         });
     });
+}
+
+// 댓글 목록 로드 함수
+async function loadComments(postId) {
+    try {
+        const response = await fetch(`http://localhost:3001/posts/${postId}/comments`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("댓글 API 응답 데이터:", result); // 디버깅용
+            renderComments(result.data, sessionStorage.getItem("userId"), postId);
+        } else {
+            console.error("댓글 로드 실패:", await response.text());
+        }
+    } catch (error) {
+        console.error("댓글 로드 중 오류 발생:", error);
+    }
 }
 
 // 삭제 모달
@@ -323,10 +347,6 @@ async function handleCommentDelete(commentId) {
 // 좋아요 버튼 이벤트 바인딩 함수
 function bindLikeButton(post, userId) {
     const likeButton = document.querySelector(".like-count");
-    if (!likeButton) {
-        console.error("좋아요 버튼을 찾을 수 없습니다.");
-        return;
-    }
 
     userId = Number(userId);
 
@@ -341,7 +361,7 @@ function bindLikeButton(post, userId) {
                 const result = await response.json();
                 const isLiked = result.data.likes.includes(userId);
                 console.log(`사용자 ${userId}의 좋아요 상태:`, isLiked); // 디버깅용
-                likeButton.textContent = `좋아요 ${result.data.like}`;
+                likeButton.textContent = `좋아요 ${result.data.likeCount}`;
                 likeButton.classList.toggle("liked", isLiked); // 동기화된 상태로 업데이트
             } else {
                 console.error("좋아요 상태 동기화 실패");
@@ -360,7 +380,7 @@ function bindLikeButton(post, userId) {
             console.log(`현재 좋아요 상태: ${isLiked}`); //디버깅용
             const url = `http://localhost:3001/posts/${post.postId}/likes/${userId}`;
             const method = isLiked ? "DELETE" : "POST";
-            console.log(`보낼 요청: ${method} ${url}`);
+            console.log(`보낼 요청: ${method} ${url}`); //디버깅용
 
             const response = await fetch(url, {
                 method: method,
@@ -369,11 +389,11 @@ function bindLikeButton(post, userId) {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("서버 응답 데이터:", result);
-                likeButton.textContent = `좋아요 ${result.data.like}`;
+                console.log("서버 응답 데이터:", result); // 디버깅용
+                likeButton.textContent = `좋아요 ${result.data.likeCount}`;
                 likeButton.classList.toggle("liked", !isLiked); // 상태 반전
-                alert(isLiked ? "좋아요가 취소되었습니다." : "좋아요를 추가했습니다.");
-                window.location.reload();
+                // alert(isLiked ? "좋아요가 취소되었습니다." : "좋아요를 추가했습니다.");
+                // window.location.reload();
             } else {
                 const errorResult = await response.json();
                 console.error("좋아요 처리 중 오류:", errorResult);

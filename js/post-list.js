@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <div class="post-info">
             <div class="post-stats">
-              <span>좋아요 ${post.like}</span>
+              <span>좋아요 ${post.likeCount}</span>
               <span>댓글 ${post.commentsCount}</span>
               <span>조회수 ${post.view}</span>
             </div>
