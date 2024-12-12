@@ -29,7 +29,7 @@
     padding: 10px;
     position: fixed;
     left: 50%; /* 중앙 정렬 */
-    bottom: 10px; /* 아래에서의 위치 */
+    bottom: 50px; /* 아래에서의 위치 */
     font-size: 12px;
     transition: visibility 0s, opacity 0.5s linear; /* 페이드 효과 */
     opacity: 0;
