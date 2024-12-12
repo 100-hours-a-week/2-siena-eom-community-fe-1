@@ -63,18 +63,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         profileInput.click();
     });
 
-    // 파일 선택 시 미리보기 업데이트 및 API 호출
-    // profileInput.addEventListener('change', async (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onload = async (e) => {
-    //             profileImage.src = e.target.result; // 선택한 이미지 미리보기
-    //             newProfile = e.target.result;
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // });
     profileInput.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -232,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
     
             if (response.ok) {
-                alert('회원 탈퇴가 완료되었습니다.');
+                // alert('회원 탈퇴가 완료되었습니다.');
                 sessionStorage.clear();
                 window.location.href = './login.html';
             } else {
@@ -242,7 +230,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('회원 탈퇴 요청 중 오류:', error);
-            alert('회원 탈퇴 처리 중 오류발생 ㅈㅅㅈㅅ');
         }
     };
 });

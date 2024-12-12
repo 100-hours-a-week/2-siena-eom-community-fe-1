@@ -318,7 +318,7 @@ function showConfirmModal(type, id) {
 // 게시글 삭제 처리
 async function handlePostDelete(postId) {
     if (!postId) {
-        alert("게시글 ID가 유효하지 않습니다.");
+        // alert("게시글 ID가 유효하지 않습니다.");
         return;
     }
     try {
@@ -328,7 +328,7 @@ async function handlePostDelete(postId) {
         });
 
         if (response.ok) {
-            alert("게시글이 삭제되었습니다.");
+            // alert("게시글이 삭제되었습니다.");
             window.location.href = "./post-list.html";
         } else {
             const errorResult = await response.json();

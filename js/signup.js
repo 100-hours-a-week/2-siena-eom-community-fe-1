@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (response.ok) {
               const result = await response.json();
               console.log('Signup success:', result);
-              alert('회원가입 성공!');
+            //   alert('회원가입 성공!');
               window.location.href = './login.html';
           } else {
               const errorText = await response.text();
