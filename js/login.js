@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 입력이 변경될 때마다 유효성 검사 실행
   for (const input of Object.values(inputs)) {
-    input.element.addEventListener('input', () => {
+    input.element.addEventListener('blur', () => {
       validateInput(input);
       checkForm();
     });
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         if (result.data && result.data.userId) {
-          alert('로그인 성공');
+          // alert('로그인 성공');
           const { userId } = result.data;
           console.log('userId:', userId); // userId 확인
           sessionStorage.setItem('userId', userId); // 로그인 후 유저 ID 저장
