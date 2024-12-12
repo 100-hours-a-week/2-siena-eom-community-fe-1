@@ -166,8 +166,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.ok) {
                 // const result = await response.json();
-                alert(postId ? '게시글 수정 완료!' : '게시글 작성 완료!');
-                window.location.href = './post-list.html';
+                // alert(postId ? '게시글 수정 완료!' : '게시글 작성 완료!');
+                postId ? 
+                    location.href = `./post-show.html?postId=${postId}` // 상세 페이지로 이동
+                    : window.location.href = './post-list.html';
+                    
             } else {
                 const result = await response.json();
                 alert(`작업이 실패하였습니다.: ${result.message}`);

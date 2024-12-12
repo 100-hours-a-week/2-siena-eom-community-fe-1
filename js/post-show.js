@@ -14,80 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = './login.html';
         return;
     }
-    
-    if (commentId) {
-        // 댓글 수정 모드: 기존 데이터 로드
-        try {
-            const response = await fetch(
-                `http://localhost:3001/posts/${postId}/comments/${commentId}`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-            const comment = result.data;
-
-            // 댓글 내용 채우기
-            commentTextarea.value = comment.content;
-            // 버튼 텍스트 변경
-            commentButton.textContent = "댓글 수정";
-        } catch (error) {
-            console.error("댓글 데이터를 불러오는 중 오류 발생:", error);
-            // alert("댓글 데이터를 불러오지 못했습니다.");
-        }
-    }
-
-    // 댓글 작성 및 수정 이벤트
-    commentButton.addEventListener("click", async () => {
-        const commentContent = commentTextarea.value.trim();
-        if (!commentContent) {
-            alert("댓글 내용을 입력해주세요.");
-            return;
-        }
-
-        const url = commentId
-            ? `http://localhost:3001/posts/${postId}/comments/${commentId}`
-            : `http://localhost:3001/posts/${postId}/comments`;
-
-        const method = commentId ? "PATCH" : "POST"; // 수정이면 PATCH, 작성이면 POST
-
-        try {
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({ content: commentContent }),
-            });
-
-            if (response.ok) {
-                await loadComments(postId);
-                commentTextarea.value = "";
-                commentButton.textContent = "댓글 작성";
-                commentId = null;
-                console.log('댓글아이디:',commentId) //디버깅용
-                // alert(commentId ? "댓글이 수정되었습니다." : "댓글이 작성되었습니다.");
-                // window.location.reload();
-            } else {
-                const errorResult = await response.json();
-                console.error(
-                    commentId ? "댓글 수정 실패:" : "댓글 작성 실패:",
-                    errorResult
-                );
-                alert("작업에 실패했습니다. 다시 시도해주세요.");
-            }
-        } catch (error) {
-            console.error("작업 중 오류 발생:", error);
-            // alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-    });
 
     // 게시글 데이터 불러오기
     if (postId) {
@@ -124,6 +50,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
         postDetail.innerHTML = "<p>유효하지 않은 요청입니다.</p>";
     }
+
+    // 댓글 작성 및 수정 이벤트
+    commentButton.addEventListener("click", async () => {
+        const commentContent = commentTextarea.value.trim();
+        const commentId = commentButton.getAttribute("data-comment-id"); // 버튼에 저장된 댓글 ID 가져오기
+
+        if (!commentContent) {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
+        const url = commentId
+            ? `http://localhost:3001/posts/${postId}/comments/${commentId}`
+            : `http://localhost:3001/posts/${postId}/comments`;
+
+        const method = commentId ? "PATCH" : "POST"; // 수정이면 PATCH, 작성이면 POST
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ content: commentContent }),
+            });
+
+            if (response.ok) {
+                await loadComments(postId);
+                commentTextarea.value = "";
+                commentButton.textContent = "댓글 작성";
+                // commentId = null;
+                commentButton.removeAttribute("data-comment-id"); // 댓글 ID 초기화
+                console.log('댓글아이디:',commentId) //디버깅용
+                // alert(commentId ? "댓글이 수정되었습니다." : "댓글이 작성되었습니다.");
+                // window.location.reload();
+            } else {
+                const errorResult = await response.json();
+                console.error(
+                    commentId ? "댓글 수정 실패:" : "댓글 작성 실패:",
+                    errorResult
+                );
+                alert("작업에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("작업 중 오류 발생:", error);
+            // alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
+    });
+
 });
 
 // 조회수 증가 API 호출 함수
@@ -227,7 +203,7 @@ function renderComments(comments, userId, postId) {
                 <div class="buttons">
                     ${
                         isAuthor
-                            ? `<button onclick="location.href='./post-show.html?postId=${postId}&commentId=${comment.commentId}'">수정</button>
+                            ? `<button class="commentEditBtn" data-comment-id="${comment.commentId}">수정</button>
                                <button class="commentDeleteBtn" data-comment-id="${comment.commentId}" onclick="showConfirmModal('comment', ${comment.commentId})">삭제</button>`
                             : '<div style="visibility: hidden; height: 36px;"></div>'
                     }
@@ -238,6 +214,24 @@ function renderComments(comments, userId, postId) {
             </div>
         `;
         commentList.insertAdjacentHTML("beforeend", commentItem);
+    });
+
+    // 댓글 수정 이벤트 바인딩
+    document.querySelectorAll(".commentEditBtn").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const commentId = event.target.getAttribute("data-comment-id");
+            const comment = comments.find((c) => String(c.commentId) === String(commentId));
+
+            if (comment) {
+                const commentTextarea = document.querySelector(".comment-input textarea");
+                const commentButton = document.querySelector(".purple-button");
+
+                commentTextarea.value = comment.content; // 댓글 내용을 입력란에 채우기
+                commentButton.textContent = "댓글 수정"; // 버튼 텍스트 변경
+                commentButton.setAttribute("data-comment-id", commentId); // 댓글 ID 저장
+            }
+        });
     });
 
     // 댓글 삭제 이벤트 바인딩
