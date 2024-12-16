@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-
     // 닉네임 유효성 검사 함수
     const validateInput = async (input) => {
         const { element, helper } = input;
@@ -137,18 +136,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nickname = inputs.nickname.element.value;
         const updatePromises = [];
 
-        // // 프로필 사진 변경 요청
-        // if (newProfile) {
-        //     updatePromises.push(
-        //         fetch(`http://localhost:3001/users/${userId}/profile`, {
-        //             method: 'PUT',
-        //             headers: { 'Content-Type': 'application/json' },
-        //             body: JSON.stringify({ profile: newProfile }),
-        //             credentials: 'include',
-        //         })
-        //     );
-        // }
-        // 프로필 경로 업데이트
         if (profilePath) {
             updatePromises.push(
                 fetch(`http://localhost:3001/users/${userId}/profile`, {
@@ -220,7 +207,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
     
             if (response.ok) {
-                // alert('회원 탈퇴가 완료되었습니다.');
                 sessionStorage.clear();
                 window.location.href = './login.html';
             } else {

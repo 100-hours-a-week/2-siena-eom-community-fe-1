@@ -144,13 +144,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
                 if (uploadResponse.ok) {
                     const uploadResult = await uploadResponse.json();
-                    imagePath = uploadResult.data.filePath; // 업로드된 파일 경로 가져오기
+                    imagePath = uploadResult.data.filePath;
                     console.log('이미지 업로드 성공:', imagePath);
-                    data.postImage = imagePath; // 업로드된 이미지를 데이터에 포함
+                    data.postImage = imagePath;
                 } else {
                     console.error('이미지 업로드 실패:', await uploadResponse.text());
                     alert('게시글 사진 업로드 실패');
-                    return; // 이미지 업로드 실패 시 게시글 저장을 중단
+                    return;
                 }
 
             }
@@ -165,11 +165,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.ok) {
-                // const result = await response.json();
-                // alert(postId ? '게시글 수정 완료!' : '게시글 작성 완료!');
                 postId ? 
-                    location.href = `./post-show.html?postId=${postId}` // 상세 페이지로 이동
-                    : window.location.href = './post-list.html';
+                    location.href = `./post-show.html?postId=${postId}` // 수정 시 상세 페이지로 이동
+                    : window.location.href = './post-list.html'; // 작성 시 게시글 목록으로이동
                     
             } else {
                 const result = await response.json();

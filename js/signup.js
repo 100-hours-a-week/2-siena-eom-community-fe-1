@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (file) {
           const reader = new FileReader();
           reader.onload = (e) => {
-              profileImage.src = e.target.result; // 선택한 이미지로 업데이트
+              profileImage.src = e.target.result;
               inputs.profile.helper.style.display = 'none';
           };
           reader.readAsDataURL(file);
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const uploadResponse = await fetch('http://localhost:3001/guest/profile', {
                 method: 'POST',
-                body: formData, // FormData로 전송
+                body: formData,
             });
 
             if (uploadResponse.ok) {
@@ -232,9 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           if (response.ok) {
-              const result = await response.json();
-              console.log('Signup success:', result);
-            //   alert('회원가입 성공!');
               window.location.href = './login.html';
           } else {
               const errorText = await response.text();

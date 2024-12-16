@@ -29,6 +29,11 @@ header .title {
 
 .header-menu-left .backspace,
 .header-menu-right img {
+    width: 40px;
+    height: 40px;
+}
+
+.header-menu-left .backspace {
     width: 35px;
     height: 35px;
 }

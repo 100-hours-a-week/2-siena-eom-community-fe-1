@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             } catch (error) {
                 console.error('비밀번호 변경 요청 중 오류:', error);
-                toast.textContent = '오류발생 ㅈㅅㅈㅅ..';
+                toast.textContent = '비밀번호 변경 중 오류가 발생했습니다.';
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 3000);
             }

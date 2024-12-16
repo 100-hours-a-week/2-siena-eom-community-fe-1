@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-      // 백엔드 서버에서 JSON 파일 불러오기
       const response = await fetch("http://localhost:3001/posts");
   
       if (!response.ok) {
