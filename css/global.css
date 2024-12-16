@@ -102,7 +102,7 @@ input::placeholder {
     width: 100px;
     height: 100px;
     border-radius: 50%; /* 이미지 원형 처리 */
-    object-fit: cover; /* 이미지를 컨테이너에 맞춰 자르기 */
+    /* object-fit: cover; */
     background-color: transparent;
 }
 
