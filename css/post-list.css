@@ -3,8 +3,12 @@
 .message {
     margin-top: 30px;
     margin-bottom: 10px;
-    /* text-align: center; */
+    text-align: center;
     font-size: 23px;
+}
+
+.post-title {
+    text-align: start;
 }
 
 .bold {

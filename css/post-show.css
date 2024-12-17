@@ -1,5 +1,10 @@
 @import url('../css/global.css');
 
+.post-title{
+    padding-top: 10px;
+    text-align: start;
+}
+
 button {
     display: flex;
     justify-content: center;
