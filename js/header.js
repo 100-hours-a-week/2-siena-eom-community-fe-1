@@ -27,13 +27,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const result = await response.json();
-        // console.log("서버에서 반환된 데이터:", result); // 디버깅용 로그
         if (!result || !result.profile) {
             throw new Error("API 응답 데이터가 올바르지 않습니다.");
         }
-
-        // 프로필 경로 설정
-        profileIcon.src = result.profile;
+        
+        profileIcon.src = result.profile; // 프로필 경로 설정
 
     } catch (error) {
         console.error("프로필 이미지를 불러오는 중 오류가 발생했습니다:", error);

@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const result = await response.json();
-            console.log("서버에서 반환된 게시글 데이터:", result); //디버깅용
 
             if (result && result.data) {
                 renderPost(result.data, userId); // 게시글 렌더링
@@ -55,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     commentButton.addEventListener("click", async () => {
         const commentContent = commentTextarea.value.trim();
         const commentId = commentButton.getAttribute("data-comment-id"); // 버튼에 저장된 댓글 ID 가져오기
-
         if (!commentContent) {
             alert("댓글 내용을 입력해주세요.");
             return;
@@ -81,11 +79,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 await loadComments(postId);
                 commentTextarea.value = "";
                 commentButton.textContent = "댓글 작성";
-                // commentId = null;
                 commentButton.removeAttribute("data-comment-id"); // 댓글 ID 초기화
-                console.log('댓글아이디:',commentId) //디버깅용
-                // alert(commentId ? "댓글이 수정되었습니다." : "댓글이 작성되었습니다.");
-                // window.location.reload();
+
             } else {
                 const errorResult = await response.json();
                 console.error(
@@ -96,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (error) {
             console.error("작업 중 오류 발생:", error);
-            // alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
+            alert("작업 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     });
 
@@ -122,15 +117,8 @@ async function increaseView(postId) {
 function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
-    // 작성자 프로필 절대경로로 설정
     const isAuthor = String(post.author) === userId;
-    // console.log('post.authorProfile:', post.authorProfile); //디버깅용
-    const authorProfilePath = post.authorProfile?.startsWith("http")
-        ? post.authorProfile
-        : `http://localhost:3001${post.authorProfile}`;
-    // console.log("authorProfilePath:", authorProfilePath); //디버깅용
-
-    // 게시글 이미지 절대경로로 설정
+    const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
     postDetail.innerHTML = `
@@ -277,9 +265,6 @@ async function loadComments(postId) {
 
         if (response.ok) {
             const result = await response.json();
-            console.log("댓글 API 응답 데이터:", result); // 디버깅용
-            console.log("댓글 개수:", result.data.length); // 디버깅용
-            // post.commentsCount = result.data.length;
             renderComments(result.data, sessionStorage.getItem("userId"), postId);
         } else {
             console.error("댓글 로드 실패:", await response.text());
@@ -318,7 +303,7 @@ function showConfirmModal(type, id) {
 // 게시글 삭제 처리
 async function handlePostDelete(postId) {
     if (!postId) {
-        // alert("게시글 ID가 유효하지 않습니다.");
+        alert("게시글 ID가 유효하지 않습니다.");
         return;
     }
     try {
@@ -328,7 +313,6 @@ async function handlePostDelete(postId) {
         });
 
         if (response.ok) {
-            // alert("게시글이 삭제되었습니다.");
             window.location.href = "./post-list.html";
         } else {
             const errorResult = await response.json();
@@ -352,8 +336,6 @@ async function handleCommentDelete(commentId) {
 
         if (response.ok) {
             await loadComments(postId);
-            // alert("댓글이 삭제되었습니다.");
-            // window.location.reload();
         } else {
             const errorResult = await response.json();
             alert("댓글 삭제 실패");
@@ -380,7 +362,6 @@ function bindLikeButton(post, userId) {
             if (response.ok) {
                 const result = await response.json();
                 const isLiked = result.data.likes.includes(userId);
-                console.log(`사용자 ${userId}의 좋아요 상태:`, isLiked); // 디버깅용
                 likeButton.textContent = `좋아요 ${result.data.likeCount}`;
                 likeButton.classList.toggle("liked", isLiked); // 동기화된 상태로 업데이트
             } else {
@@ -397,10 +378,8 @@ function bindLikeButton(post, userId) {
     likeButton.addEventListener("click", async () => {
         try {
             const isLiked = likeButton.classList.contains("liked");
-            console.log(`현재 좋아요 상태: ${isLiked}`); //디버깅용
             const url = `http://localhost:3001/posts/${post.postId}/likes/${userId}`;
             const method = isLiked ? "DELETE" : "POST";
-            console.log(`보낼 요청: ${method} ${url}`); //디버깅용
 
             const response = await fetch(url, {
                 method: method,
@@ -409,11 +388,8 @@ function bindLikeButton(post, userId) {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("서버 응답 데이터:", result); // 디버깅용
                 likeButton.textContent = `좋아요 ${result.data.likeCount}`;
                 likeButton.classList.toggle("liked", !isLiked); // 상태 반전
-                // alert(isLiked ? "좋아요가 취소되었습니다." : "좋아요를 추가했습니다.");
-                // window.location.reload();
             } else {
                 const errorResult = await response.json();
                 console.error("좋아요 처리 중 오류:", errorResult);

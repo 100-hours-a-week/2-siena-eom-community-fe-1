@@ -27,8 +27,12 @@ header .title {
     right: 30%;
 }
 
-.header-menu-left .backspace,
 .header-menu-right img {
+    width: 40px;
+    height: 40px;
+}
+
+.header-menu-left .backspace {
     width: 35px;
     height: 35px;
 }
@@ -55,12 +59,7 @@ body {
     overflow-y: auto;
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h2 {
+h1, h2 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -97,7 +96,7 @@ input::placeholder {
     width: 100px;
     height: 100px;
     border-radius: 50%; /* 이미지 원형 처리 */
-    object-fit: cover; /* 이미지를 컨테이너에 맞춰 자르기 */
+    /* object-fit: cover; */
     background-color: transparent;
 }
 

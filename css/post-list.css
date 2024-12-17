@@ -7,6 +7,10 @@
     font-size: 23px;
 }
 
+.post-title {
+    text-align: start;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -39,7 +43,8 @@ button {
     box-shadow: 0 4px 8px #ccc;
 }
 
-.post-header {
+.post-header,
+.post-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,12 +54,6 @@ button {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
-}
-
-.post-info{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .post-stats {
