@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitButton = document.querySelector('.purple-button');
   const profileImage = document.getElementById('profile-image');
   const profileInput = document.getElementById('profile');
+  const BASE_IP = 'http://3.39.237.226:3001';
+  // const BASE_IP = 'localhost:3001';
 
   const inputs = {
       profile: {
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else {
               // 유효성 검사 통과후에 중복 확인 요청
               try {
-                  const response = await fetch('http://localhost:3001/guest/emailValid', {
+                  const response = await fetch(`${BASE_IP}/guest/emailValid`, {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
@@ -109,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
               isNicknameValid = false;
           } else {
               try {
-                  const response = await fetch(`http://localhost:3001/guest/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
+                  const response = await fetch(`${BASE_IP}/guest/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
                       method: 'GET',
                   });
 
@@ -195,14 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
 
       try {
-        let profilePath = 'http://localhost:3001/images/default-profile.png';
+        let profilePath = `${BASE_IP}/images/default-profile.png`;
 
         // 프로필 사진 업로드 처리
         if (profileInput.files[0]) {
             const formData = new FormData();
             formData.append('profile', profileInput.files[0]); // 파일 추가
 
-            const uploadResponse = await fetch('http://localhost:3001/guest/profile', {
+            const uploadResponse = await fetch(`${BASE_IP}/guest/profile`, {
                 method: 'POST',
                 body: formData,
             });
@@ -223,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
             profile: profilePath,
         };
 
-        const response = await fetch('http://localhost:3001/guest/signup', {
+        const response = await fetch(`${BASE_IP}/guest/signup`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',

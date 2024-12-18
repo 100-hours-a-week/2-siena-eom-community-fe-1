@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const BASE_IP = 'http://3.39.237.226:3001';
+  // const BASE_IP = 'localhost:3001';
+
     try {
-      const response = await fetch("http://localhost:3001/posts");
+      const response = await fetch(`${BASE_IP}/posts`);
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const authorProfilePath = post.authorProfile?.startsWith("http")
             ? post.authorProfile
-            : `http://localhost:3001${post.authorProfile}`;
+            : `${BASE_IP}${post.authorProfile}`;
   
         postItem.innerHTML = `
           <div class="post-header">

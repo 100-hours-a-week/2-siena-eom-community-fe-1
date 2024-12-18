@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.change-form');
     const submitButton = document.querySelector('.purple-button');
     const toast = document.getElementById('toast');
+    const BASE_IP = 'http://3.39.237.226:3001';
+    // const BASE_IP = 'localhost:3001';
 
     // 입력 필드와 헬퍼 텍스트 매핑
     const inputs = {
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`${BASE_IP}/users/${userId}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -107,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const userId = sessionStorage.getItem('userId');
                 const newPassword = inputs.pw.element.value;
 
-                const response = await fetch(`http://localhost:3001/users/${userId}/password`, {
+                const response = await fetch(`${BASE_IP}/users/${userId}/password`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password: newPassword }),

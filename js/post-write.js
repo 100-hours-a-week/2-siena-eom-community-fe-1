@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
+    const BASE_IP = 'http://3.39.237.226:3001';
+    // const BASE_IP = 'localhost:3001';
 
     let imagePath = null;
 
@@ -92,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (postId) {
         // 수정 모드: 기존 데이터 로드
         try {
-            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+            const response = await fetch(`${BASE_IP}/posts/${postId}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -126,8 +128,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const url = postId
-            ? `http://localhost:3001/posts/${postId}` // 수정 URL
-            : 'http://localhost:3001/posts'; // 작성 URL
+            ? `${BASE_IP}/posts/${postId}` // 수정 URL
+            : '${BASE_IP}/posts'; // 작성 URL
 
         const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
 
@@ -137,7 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const formData = new FormData();
                 formData.append('postImage', postImageFile);
 
-                const uploadResponse = await fetch (`http://localhost:3001/posts/${postId || 'new'}/postImage`,
+                const uploadResponse = await fetch (`${BASE_IP}/posts/${postId || 'new'}/postImage`,
                     {
                         method: 'POST',
                         body: formData,
