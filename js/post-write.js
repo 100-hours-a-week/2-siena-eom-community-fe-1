@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function checkForm() {
         let isFormValid = true;
         for (const input of Object.values(inputs)) {
+            if (!input.helper) continue;
             validateInput(input);
             if (input.helper && input.helper.textContent !== '') {
                 isFormValid = false;
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const url = postId
             ? `${BASE_IP}/posts/${postId}` // 수정 URL
-            : '${BASE_IP}/posts'; // 작성 URL
+            : `${BASE_IP}/posts`; // 작성 URL
 
         const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
 

@@ -1,10 +1,11 @@
+const BASE_IP = 'http://3.39.237.226:3001';
+// const BASE_IP = 'localhost:3001';
+
 document.addEventListener("DOMContentLoaded", async () => {
     const postDetail = document.getElementById("post-detail");
     const userId = sessionStorage.getItem("userId");
     const commentButton = document.querySelector(".purple-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
     
     // URL에서 postId, commentId 읽기
     const urlParams = new URLSearchParams(window.location.search);
