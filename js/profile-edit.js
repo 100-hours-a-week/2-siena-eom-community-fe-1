@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const profileInput = document.getElementById('profile');
     const toast = document.getElementById('toast');
     const emailElement = document.getElementById('user-email');
+    const BASE_IP = 'http://3.39.237.226:3001';
+    // const BASE_IP = 'localhost:3001';
 
     let initNickname = '';
     let profilePath = '';
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`${BASE_IP}/users/${userId}`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -71,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             try {
                 const userId = sessionStorage.getItem('userId');
-                const uploadResponse = await fetch(`http://localhost:3001/users/${userId}/profile`, {
+                const uploadResponse = await fetch(`${BASE_IP}/users/${userId}/profile`, {
                     method: 'POST',
                     body: formData,
                     credentials: 'include',
@@ -108,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // 중복 확인 API 호출
                 const userId = sessionStorage.getItem('userId');
                 try {
-                    const response = await fetch(`http://localhost:3001/users/${userId}/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
+                    const response = await fetch(`${BASE_IP}/users/${userId}/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
                         method: 'GET',
                         credentials: 'include',
                     });
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (profilePath) {
             updatePromises.push(
-                fetch(`http://localhost:3001/users/${userId}/profile`, {
+                fetch(`${BASE_IP}/users/${userId}/profile`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ profile: profilePath }),
@@ -150,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 닉네임 변경 요청
         if (nickname !== initNickname) {
             updatePromises.push(
-                fetch(`http://localhost:3001/users/${userId}/nickname`, {
+                fetch(`${BASE_IP}/users/${userId}/nickname`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nickname }),
@@ -201,7 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userId = sessionStorage.getItem('userId');
 
         try {
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`${BASE_IP}/users/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userId = sessionStorage.getItem("userId");
     const commentButton = document.querySelector(".purple-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
-
+    const BASE_IP = 'http://3.39.237.226:3001';
+    // const BASE_IP = 'localhost:3001';
+    
     // URL에서 postId, commentId 읽기
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("postId");
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             await increaseView(postId);
 
-            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+            const response = await fetch(`${BASE_IP}/posts/${postId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,8 +62,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const url = commentId
-            ? `http://localhost:3001/posts/${postId}/comments/${commentId}`
-            : `http://localhost:3001/posts/${postId}/comments`;
+            ? `${BASE_IP}/posts/${postId}/comments/${commentId}`
+            : `${BASE_IP}/posts/${postId}/comments`;
 
         const method = commentId ? "PATCH" : "POST"; // 수정이면 PATCH, 작성이면 POST
 
@@ -100,7 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 조회수 증가 API 호출 함수
 async function increaseView(postId) {
     try {
-        const response = await fetch(`http://localhost:3001/posts/${postId}/viewCount`, {
+        const response = await fetch(`${BASE_IP}/posts/${postId}/viewCount`, {
             method: "POST",
             credentials: "include",
         });
@@ -177,7 +179,7 @@ function renderComments(comments, userId, postId) {
 
         const authorProfilePath = comment.authorProfile?.startsWith("http")
             ? comment.authorProfile
-            : `http://localhost:3001${comment.authorProfile}`;
+            : `${BASE_IP}${comment.authorProfile}`;
 
         const commentItem = `
             <div class="comment-item" id="comment-${comment.commentId}">
@@ -239,7 +241,7 @@ async function loadComments(postId) {
     // 서버에서 댓글 상태 동기화
     const updateCommentsCount = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+            const response = await fetch(`${BASE_IP}/posts/${postId}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -258,7 +260,7 @@ async function loadComments(postId) {
 
 
     try {
-        const response = await fetch(`http://localhost:3001/posts/${postId}/comments`, {
+        const response = await fetch(`${BASE_IP}/posts/${postId}/comments`, {
             method: "GET",
             credentials: "include",
         });
@@ -307,7 +309,7 @@ async function handlePostDelete(postId) {
         return;
     }
     try {
-        const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+        const response = await fetch(`${BASE_IP}/posts/${postId}`, {
             method: "DELETE",
             credentials: "include",
         });
@@ -329,7 +331,7 @@ async function handleCommentDelete(commentId) {
     const postId = new URLSearchParams(window.location.search).get("postId");
 
     try {
-        const response = await fetch(`http://localhost:3001/posts/${postId}/comments/${commentId}`, {
+        const response = await fetch(`${BASE_IP}/posts/${postId}/comments/${commentId}`, {
             method: "DELETE",
             credentials: "include",
         });
@@ -355,7 +357,7 @@ function bindLikeButton(post, userId) {
      // 서버에서 좋아요 상태 동기화
      const updateButtonState = async () => {
         try {
-            const response = await fetch(`http://localhost:3001/posts/${post.postId}`, {
+            const response = await fetch(`${BASE_IP}/posts/${post.postId}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -378,7 +380,7 @@ function bindLikeButton(post, userId) {
     likeButton.addEventListener("click", async () => {
         try {
             const isLiked = likeButton.classList.contains("liked");
-            const url = `http://localhost:3001/posts/${post.postId}/likes/${userId}`;
+            const url = `${BASE_IP}/posts/${post.postId}/likes/${userId}`;
             const method = isLiked ? "DELETE" : "POST";
 
             const response = await fetch(url, {

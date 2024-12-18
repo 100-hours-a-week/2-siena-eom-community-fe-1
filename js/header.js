@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
     const headerTitle = document.getElementById("headerTitle");
     const profileIcon = document.querySelector(".profile-icon");
+    const BASE_IP = 'http://3.39.237.226:3001';
+    // const BASE_IP = 'localhost:3001';
 
     try {
         const userId = sessionStorage.getItem("userId");
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // 사용자 정보 API 호출
-        const response = await fetch(`http://localhost:3001/users/${userId}`, {
+        const response = await fetch(`${BASE_IP}/users/${userId}`, {
             method: "GET",
             credentials: "include",
         });
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3001/users/logout', {
+            const response = await fetch(`${BASE_IP}/users/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });

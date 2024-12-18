@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const loginButton = document.querySelector('.purple-button');
+  const BASE_IP = 'http://3.39.237.226:3001';
+  // const BASE_IP = 'localhost:3001';
+
 
   const inputs = {
     email: {
@@ -75,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/guest/login', {
+      const response = await fetch(`${BASE_IP}/guest/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
