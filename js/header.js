@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
     const headerTitle = document.getElementById("headerTitle");
     const profileIcon = document.querySelector(".profile-icon");
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
+    // const BASE_IP = 'http://3.39.237.226:3001';
+    const BASE_IP = 'http://localhost:3001';
 
     try {
         const userId = sessionStorage.getItem("userId");
