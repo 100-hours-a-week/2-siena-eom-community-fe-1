@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 helper.style.color = 'red';
                 isNicknameValid = false;
             } else if (/\s/.test(nicknameValue) || nicknameValue.length > 10) {
-                helper.textContent = '*닉네임은 최대 10자까지 작성 가능하고 띄어쓰기 없이 입력해주세요.';
+                helper.textContent = '*닉네임은 띄어쓰기 없이 최대 10자까지 작성 가능합니다.';
                 helper.style.color = 'red';
                 isNicknameValid = false;
             } else {
@@ -191,6 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
             input.element.addEventListener('blur', () => validateAndCheck(input));
         }
     }
+
+    // 비밀번호 변경 시 비밀번호 확인 유효성 검사 추가
+    inputs.pw.element.addEventListener('input', () => {
+        validateAndCheck(inputs.pwck); // 비밀번호 변경 시 비밀번호 확인 유효성 검사를 다시 수행
+    });
 
 
     submitButton.addEventListener('click', async (event) => {
