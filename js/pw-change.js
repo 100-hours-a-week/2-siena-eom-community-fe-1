@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 로그인한 사용자 정보 로드
     const loadUserData = async () => {
         try {
-            // const userId = sessionStorage.getItem('userId');
-
             const response = await fetch(`${BASE_IP}/users/userId`, {
                 method: 'GET',
                 credentials: 'include',
@@ -42,11 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             userId = result.data.userId;
-
-            // const response = await fetch(`${BASE_IP}/users/${userId}`, {
-            //     method: 'GET',
-            //     credentials: 'include',
-            // });
 
         } catch (error) {
             console.error('사용자 정보 로드 중 오류:', error);
@@ -115,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (isValid) {
             try{
-                // const userId = sessionStorage.getItem('userId');
                 const newPassword = inputs.pw.element.value;
 
                 const response = await fetch(`${BASE_IP}/users/${userId}/password`, {

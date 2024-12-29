@@ -3,7 +3,6 @@ const BASE_IP = 'http://localhost:3001';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const postDetail = document.getElementById("post-detail");
-    // const userId = sessionStorage.getItem("userId");
     const commentButton = document.querySelector(".purple-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
     
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const userResponse = await fetch(`${BASE_IP}/users/userId`, {
             method: "GET",
-            credentials: "include", // 세션 쿠키 포함
+            credentials: "include",
         });
 
         if (!userResponse.ok) {
@@ -24,10 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const result = await userResponse.json();
-        // console.log("리절트:", result);
         userId = result.data.userId;
-        // console.log("리절트.데이타.유저아이디:", userId);
-
         if (!userId) {
             alert('로그인이 필요합니다.');
             window.location.href = './login.html';
@@ -143,7 +139,6 @@ function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
     const isAuthor = Number(post.author) === userId;
-    // console.log("포스트어서:", post.author,"유저아이디:", userId);
     const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
@@ -291,7 +286,6 @@ async function loadComments(postId, userId) {
         if (response.ok) {
             const result = await response.json();
             renderComments(result.data, userId, postId);
-            // renderComments(result.data, sessionStorage.getItem("userId"), postId);
         } else {
             console.error("댓글 로드 실패:", await response.text());
         }

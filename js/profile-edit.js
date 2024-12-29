@@ -30,13 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 로그인한 사용자 정보 로드
     const loadUserdata = async () => {
         try {
-            // const userId = sessionStorage.getItem('userId');
-
-            // const response = await fetch(`${BASE_IP}/users/${userId}`, {
-            //     method: 'GET',
-            //     credentials: 'include',
-            // });
-
             const response = await fetch(`${BASE_IP}/users/userId`, {
                 method: 'GET',
                 credentials: 'include',
@@ -80,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             formData.append('profile', file);
 
             try {
-                // const userId = sessionStorage.getItem('userId');
                 const uploadResponse = await fetch(`${BASE_IP}/users/${userId}/profile`, {
                     method: 'POST',
                     body: formData,
@@ -116,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 helper.textContent = '*닉네임은 최대 10자까지 작성 가능합니다.';
             } else if (nicknameValue !== initNickname) {
                 // 중복 확인 API 호출
-                // const userId = sessionStorage.getItem('userId');
                 try {
                     const response = await fetch(`${BASE_IP}/users/${userId}/nicknameValid?nickname=${encodeURIComponent(nicknameValue)}`, {
                         method: 'GET',
@@ -142,7 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 수정완료 버튼 이벤트 등록
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        // const userId = sessionStorage.getItem('userId');
         const nickname = inputs.nickname.element.value;
         const updatePromises = [];
 
@@ -208,7 +198,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     window.confirmDeletion = async () => {
-        // const userId = sessionStorage.getItem('userId');
 
         try {
             const response = await fetch(`${BASE_IP}/users/${userId}`, {
@@ -217,7 +206,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
     
             if (response.ok) {
-                // sessionStorage.clear();
                 window.location.href = './login.html';
             } else {
                 const result = await response.json();

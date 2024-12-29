@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const userResponse = await fetch(`${BASE_IP}/users/userId`, {
             method: "GET",
-            credentials: "include", // 세션 쿠키 포함
+            credentials: "include",
         });
 
         if (!userResponse.ok) {
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const result = await userResponse.json();
         userId = result.data.userId;
-
         if (!userId) {
             alert('로그인이 필요합니다.');
             window.location.href = './login.html';

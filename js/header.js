@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const result = await response.json();
-        console.log("리절트:", result); // 디버깅용
         if (!result || !result.data.profile) {
             throw new Error("API 응답 데이터가 올바르지 않습니다.");
         }
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.status === 200) {
                 alert('로그아웃 되었습니다.');
-                // sessionStorage.clear();
                 window.location.href = './login.html';
             } else {
                 const result = await response.json();
