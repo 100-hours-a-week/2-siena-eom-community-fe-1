@@ -3,7 +3,7 @@ const BASE_IP = 'http://localhost:3001';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const postDetail = document.getElementById("post-detail");
-    const userId = sessionStorage.getItem("userId");
+    // const userId = sessionStorage.getItem("userId");
     const commentButton = document.querySelector(".purple-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
     
@@ -12,12 +12,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     const postId = urlParams.get("postId");
     let commentId = urlParams.get("commentId");
 
-    if (!userId) {
+    let userId;
+    try {
+        const userResponse = await fetch(`${BASE_IP}/users/userId`, {
+            method: "GET",
+            credentials: "include", // 세션 쿠키 포함
+        });
+
+        if (!userResponse.ok) {
+            throw new Error("사용자 정보를 가져오지 못했습니다.");
+        }
+
+        const result = await userResponse.json();
+        // console.log("리절트:", result);
+        userId = result.data.userId;
+        // console.log("리절트.데이타.유저아이디:", userId);
+
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = './login.html';
+            return;
+        }
+    } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
         alert('로그인이 필요합니다.');
         window.location.href = './login.html';
         return;
     }
-
+    
     // 게시글 데이터 불러오기
     if (postId) {
         try {
@@ -79,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (response.ok) {
-                await loadComments(postId);
+                await loadComments(postId, userId);
                 commentTextarea.value = "";
                 commentButton.textContent = "댓글 작성";
                 commentButton.removeAttribute("data-comment-id"); // 댓글 ID 초기화
@@ -120,7 +142,8 @@ async function increaseView(postId) {
 function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
-    const isAuthor = String(post.author) === userId;
+    const isAuthor = Number(post.author) === userId;
+    console.log("포스트어서:", post.author,"유저아이디:", userId);
     const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
@@ -236,7 +259,7 @@ function renderComments(comments, userId, postId) {
 }
 
 // 댓글 목록 로드 함수
-async function loadComments(postId) {
+async function loadComments(postId, userId) {
     const commentCount = document.querySelector(".comment-count");
 
     // 서버에서 댓글 상태 동기화
@@ -259,7 +282,6 @@ async function loadComments(postId) {
 
     updateCommentsCount();
 
-
     try {
         const response = await fetch(`${BASE_IP}/posts/${postId}/comments`, {
             method: "GET",
@@ -268,7 +290,8 @@ async function loadComments(postId) {
 
         if (response.ok) {
             const result = await response.json();
-            renderComments(result.data, sessionStorage.getItem("userId"), postId);
+            renderComments(result.data, userId, postId);
+            // renderComments(result.data, sessionStorage.getItem("userId"), postId);
         } else {
             console.error("댓글 로드 실패:", await response.text());
         }

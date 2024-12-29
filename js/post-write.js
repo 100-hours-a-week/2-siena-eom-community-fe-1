@@ -6,12 +6,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let imagePath = null;
 
-    const userId = sessionStorage.getItem('userId');
-            if (!userId) {
-                alert('로그인이 필요합니다.');
-                window.location.href = './login.html';
-                return;
-            }
+    let userId;
+    try {
+        const userResponse = await fetch(`${BASE_IP}/users/userId`, {
+            method: "GET",
+            credentials: "include", // 세션 쿠키 포함
+        });
+
+        if (!userResponse.ok) {
+            throw new Error("사용자 정보를 가져오지 못했습니다.");
+        }
+
+        const result = await userResponse.json();
+        userId = result.data.userId;
+
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = './login.html';
+            return;
+        }
+    } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+        alert('로그인이 필요합니다.');
+        window.location.href = './login.html';
+        return;
+    }
 
     const inputs = {
         postTitle: {
