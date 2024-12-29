@@ -143,7 +143,7 @@ function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
     const isAuthor = Number(post.author) === userId;
-    console.log("포스트어서:", post.author,"유저아이디:", userId);
+    // console.log("포스트어서:", post.author,"유저아이디:", userId);
     const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
@@ -229,7 +229,7 @@ function renderComments(comments, userId, postId) {
         `;
         commentList.insertAdjacentHTML("beforeend", commentItem);
     });
-
+    
     // 댓글 수정 이벤트 바인딩
     document.querySelectorAll(".commentEditBtn").forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -253,7 +253,7 @@ function renderComments(comments, userId, postId) {
         button.addEventListener("click", (event) => {
             event.stopPropagation();
             const commentId = event.target.getAttribute("data-comment-id");
-            showConfirmModal("comment", commentId);
+            showConfirmModal("comment", commentId, userId);
         });
     });
 }
@@ -301,7 +301,7 @@ async function loadComments(postId, userId) {
 }
 
 // 삭제 모달
-function showConfirmModal(type, id) {
+function showConfirmModal(type, id, userId) {
     const modal = type === "post" ? document.getElementById("confirmModalPost") : document.getElementById("confirmModalComment");
 
     modal.style.display = "flex";
@@ -317,7 +317,7 @@ function showConfirmModal(type, id) {
         if (type === "post") {
             await handlePostDelete(id);
         } else if (type === "comment") {
-            await handleCommentDelete(id);
+            await handleCommentDelete(id, userId);
         }
     };
 
@@ -351,7 +351,7 @@ async function handlePostDelete(postId) {
 }
 
 // 댓글 삭제 처리
-async function handleCommentDelete(commentId) {
+async function handleCommentDelete(commentId, userId) {
     const postId = new URLSearchParams(window.location.search).get("postId");
 
     try {
@@ -361,7 +361,7 @@ async function handleCommentDelete(commentId) {
         });
 
         if (response.ok) {
-            await loadComments(postId);
+            await loadComments(postId,userId);
         } else {
             const errorResult = await response.json();
             alert("댓글 삭제 실패");
