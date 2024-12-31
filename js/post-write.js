@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             helper: document.getElementById('content-helper')
         },
         image: {
-            element: document.getElementById('image')
+            element: document.getElementById('image'),
+            label: document.getElementById('image-label')
         }
     };
 
@@ -128,7 +129,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 기존 데이터 폼에 채우기
             inputs.postTitle.element.value = post.title;
             inputs.content.element.value = post.content;
-            postImage = post.postImage || null;
+
+            // 기존 이미지 파일명, 미리보기 표시
+            if (post.postImage) {
+                // const currentFileName = post.postImage.split('/').pop(); // 파일명 추출
+                // inputs.image.label.textContent = `기존 파일: ${currentFileName}`;
+                const imagePreview = document.querySelector("#image-preview");
+                imagePreview.src = `${post.postImage}`;
+                imagePreview.style.display = "block"; // 이미지 미리보기 표시
+            }
+
+            imagePath = post.postImage || null; // 기존 이미지 경로 저장
 
             checkForm(); // 폼 상태 확인
         } catch (error) {

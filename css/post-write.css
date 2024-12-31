@@ -23,3 +23,9 @@ textarea::placeholder {
 .non-border {
     border: none;
 }
+
+.upload-image{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
