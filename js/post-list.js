@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const posts = result.data;
-  
+      // 게시글 최신순 정렬
+      posts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
       const postListSection = document.querySelector(".PostList");
   
       // 기존 정적 게시글 제거
