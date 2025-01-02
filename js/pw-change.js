@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.change-form');
     const submitButton = document.querySelector('.purple-button');
     const toast = document.getElementById('toast');
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
+    // const BASE_IP = 'http://3.39.237.226:3001';
+    const BASE_IP = 'http://localhost:3001';
+
 
     // 입력 필드와 헬퍼 텍스트 매핑
     const inputs = {
@@ -17,18 +18,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    let userId;
     // 로그인한 사용자 정보 로드
     const loadUserData = async () => {
         try {
-            const userId = sessionStorage.getItem('userId');
-
-            if (!userId) {
-                alert('로그인이 필요합니다.');
-                window.location.href = './login.html';
-                return;
-            }
-
-            const response = await fetch(`${BASE_IP}/users/${userId}`, {
+            const response = await fetch(`${BASE_IP}/users/userId`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -38,6 +32,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 alert('사용자 정보를 불러오는데 실패했습니다.');
                 return;
             }
+
+            const result = await response.json();
+            if (!result.data.userId) {
+                alert('로그인이 필요합니다.');
+                window.location.href = './login.html';
+                return;
+            }
+            userId = result.data.userId;
 
         } catch (error) {
             console.error('사용자 정보 로드 중 오류:', error);
@@ -106,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (isValid) {
             try{
-                const userId = sessionStorage.getItem('userId');
                 const newPassword = inputs.pw.element.value;
 
                 const response = await fetch(`${BASE_IP}/users/${userId}/password`, {

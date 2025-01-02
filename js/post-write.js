@@ -1,17 +1,35 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
+    // const BASE_IP = 'http://3.39.237.226:3001';
+    const BASE_IP = 'http://localhost:3001';
 
     let imagePath = null;
 
-    const userId = sessionStorage.getItem('userId');
-            if (!userId) {
-                alert('로그인이 필요합니다.');
-                window.location.href = './login.html';
-                return;
-            }
+    let userId;
+    try {
+        const userResponse = await fetch(`${BASE_IP}/users/userId`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!userResponse.ok) {
+            throw new Error("사용자 정보를 가져오지 못했습니다.");
+        }
+
+        const result = await userResponse.json();
+        userId = result.data.userId;
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = './login.html';
+            return;
+        }
+    } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+        alert('로그인이 필요합니다.');
+        window.location.href = './login.html';
+        return;
+    }
 
     const inputs = {
         postTitle: {
@@ -23,7 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             helper: document.getElementById('content-helper')
         },
         image: {
-            element: document.getElementById('image')
+            element: document.getElementById('image'),
+            label: document.getElementById('image-label')
         }
     };
 
@@ -68,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function checkForm() {
         let isFormValid = true;
         for (const input of Object.values(inputs)) {
+            if (!input.helper) continue;
             validateInput(input);
             if (input.helper && input.helper.textContent !== '') {
                 isFormValid = false;
@@ -109,7 +129,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 기존 데이터 폼에 채우기
             inputs.postTitle.element.value = post.title;
             inputs.content.element.value = post.content;
-            postImage = post.postImage || null;
+
+            // 기존 이미지 파일명, 미리보기 표시
+            if (post.postImage) {
+                // const currentFileName = post.postImage.split('/').pop(); // 파일명 추출
+                // inputs.image.label.textContent = `기존 파일: ${currentFileName}`;
+                const imagePreview = document.querySelector("#image-preview");
+                imagePreview.src = `${post.postImage}`;
+                imagePreview.style.display = "block"; // 이미지 미리보기 표시
+            }
+
+            imagePath = post.postImage || null; // 기존 이미지 경로 저장
 
             checkForm(); // 폼 상태 확인
         } catch (error) {
@@ -129,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const url = postId
             ? `${BASE_IP}/posts/${postId}` // 수정 URL
-            : '${BASE_IP}/posts'; // 작성 URL
+            : `${BASE_IP}/posts`; // 작성 URL
 
         const method = postId ? 'PATCH' : 'POST'; // 작성이면 POST, 수정이면 PATCH
 

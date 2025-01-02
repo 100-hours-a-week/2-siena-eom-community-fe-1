@@ -1,22 +1,41 @@
+// const BASE_IP = 'http://3.39.237.226:3001';
+const BASE_IP = 'http://localhost:3001';
+
 document.addEventListener("DOMContentLoaded", async () => {
     const postDetail = document.getElementById("post-detail");
-    const userId = sessionStorage.getItem("userId");
     const commentButton = document.querySelector(".purple-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
     
     // URL에서 postId, commentId 읽기
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get("postId");
     let commentId = urlParams.get("commentId");
 
-    if (!userId) {
+    let userId;
+    try {
+        const userResponse = await fetch(`${BASE_IP}/users/userId`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!userResponse.ok) {
+            throw new Error("사용자 정보를 가져오지 못했습니다.");
+        }
+
+        const result = await userResponse.json();
+        userId = result.data.userId;
+        if (!userId) {
+            alert('로그인이 필요합니다.');
+            window.location.href = './login.html';
+            return;
+        }
+    } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
         alert('로그인이 필요합니다.');
         window.location.href = './login.html';
         return;
     }
-
+    
     // 게시글 데이터 불러오기
     if (postId) {
         try {
@@ -78,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (response.ok) {
-                await loadComments(postId);
+                await loadComments(postId, userId);
                 commentTextarea.value = "";
                 commentButton.textContent = "댓글 작성";
                 commentButton.removeAttribute("data-comment-id"); // 댓글 ID 초기화
@@ -119,7 +138,7 @@ async function increaseView(postId) {
 function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
-    const isAuthor = String(post.author) === userId;
+    const isAuthor = Number(post.author) === userId;
     const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
@@ -205,7 +224,7 @@ function renderComments(comments, userId, postId) {
         `;
         commentList.insertAdjacentHTML("beforeend", commentItem);
     });
-
+    
     // 댓글 수정 이벤트 바인딩
     document.querySelectorAll(".commentEditBtn").forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -229,13 +248,13 @@ function renderComments(comments, userId, postId) {
         button.addEventListener("click", (event) => {
             event.stopPropagation();
             const commentId = event.target.getAttribute("data-comment-id");
-            showConfirmModal("comment", commentId);
+            showConfirmModal("comment", commentId, userId);
         });
     });
 }
 
 // 댓글 목록 로드 함수
-async function loadComments(postId) {
+async function loadComments(postId, userId) {
     const commentCount = document.querySelector(".comment-count");
 
     // 서버에서 댓글 상태 동기화
@@ -258,7 +277,6 @@ async function loadComments(postId) {
 
     updateCommentsCount();
 
-
     try {
         const response = await fetch(`${BASE_IP}/posts/${postId}/comments`, {
             method: "GET",
@@ -267,7 +285,7 @@ async function loadComments(postId) {
 
         if (response.ok) {
             const result = await response.json();
-            renderComments(result.data, sessionStorage.getItem("userId"), postId);
+            renderComments(result.data, userId, postId);
         } else {
             console.error("댓글 로드 실패:", await response.text());
         }
@@ -277,7 +295,7 @@ async function loadComments(postId) {
 }
 
 // 삭제 모달
-function showConfirmModal(type, id) {
+function showConfirmModal(type, id, userId) {
     const modal = type === "post" ? document.getElementById("confirmModalPost") : document.getElementById("confirmModalComment");
 
     modal.style.display = "flex";
@@ -293,7 +311,7 @@ function showConfirmModal(type, id) {
         if (type === "post") {
             await handlePostDelete(id);
         } else if (type === "comment") {
-            await handleCommentDelete(id);
+            await handleCommentDelete(id, userId);
         }
     };
 
@@ -327,7 +345,7 @@ async function handlePostDelete(postId) {
 }
 
 // 댓글 삭제 처리
-async function handleCommentDelete(commentId) {
+async function handleCommentDelete(commentId, userId) {
     const postId = new URLSearchParams(window.location.search).get("postId");
 
     try {
@@ -337,7 +355,7 @@ async function handleCommentDelete(commentId) {
         });
 
         if (response.ok) {
-            await loadComments(postId);
+            await loadComments(postId,userId);
         } else {
             const errorResult = await response.json();
             alert("댓글 삭제 실패");

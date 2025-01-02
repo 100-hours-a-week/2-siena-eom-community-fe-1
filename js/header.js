@@ -2,24 +2,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
     const headerTitle = document.getElementById("headerTitle");
     const profileIcon = document.querySelector(".profile-icon");
-    const BASE_IP = 'http://3.39.237.226:3001';
-    // const BASE_IP = 'localhost:3001';
+    // const BASE_IP = 'http://3.39.237.226:3001';
+    const BASE_IP = 'http://localhost:3001';
 
     try {
-        const userId = sessionStorage.getItem("userId");
-        if (!userId) {
-            console.error("로그인된 사용자 정보가 없습니다.");
-            profileIcon.src = "../images/default-profile.png";
-            logoutLink.addEventListener('click', async (event) => {
-                event.preventDefault();
-                alert('로그인되어 있지 않습니다. 로그인 페이지로 이동합니다.');
-                window.location.href = './login.html';
-            });
-            return;
-        }
-
-        // 사용자 정보 API 호출
-        const response = await fetch(`${BASE_IP}/users/${userId}`, {
+        // 사용자 정보 API 호출 (세션 기반)
+        const response = await fetch(`${BASE_IP}/users/userId`, {
             method: "GET",
             credentials: "include",
         });
@@ -29,15 +17,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const result = await response.json();
-        if (!result || !result.profile) {
+        if (!result || !result.data.profile) {
             throw new Error("API 응답 데이터가 올바르지 않습니다.");
         }
         
-        profileIcon.src = result.profile; // 프로필 경로 설정
+        // 프로필 이미지 설정
+        profileIcon.src = result.data.profile;
 
     } catch (error) {
         console.error("프로필 이미지를 불러오는 중 오류가 발생했습니다:", error);
         profileIcon.src = "../images/default-profile.png"; // 오류 시 기본 이미지 사용
+
+        logoutLink.addEventListener('click', async (event) => {
+            event.preventDefault();
+            alert('로그인되어 있지 않습니다. 로그인 페이지로 이동합니다.');
+            window.location.href = './login.html';
+        });
     }
 
     if (headerTitle) {
@@ -57,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.status === 200) {
                 alert('로그아웃 되었습니다.');
-                sessionStorage.clear();
                 window.location.href = './login.html';
             } else {
                 const result = await response.json();

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const loginButton = document.querySelector('.purple-button');
-  const BASE_IP = 'http://3.39.237.226:3001';
-  // const BASE_IP = 'localhost:3001';
+  // const BASE_IP = 'http://3.39.237.226:3001';
+  const BASE_IP = 'http://localhost:3001';
 
 
   const inputs = {
@@ -92,8 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         if (result.data && result.data.userId) {
-          const { userId } = result.data;
-          sessionStorage.setItem('userId', userId); // 로그인 후 유저 ID 저장
           window.location.href = './post-list.html';
         } else {
           console.error('응답에 userId 없음', result);
