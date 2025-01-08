@@ -381,8 +381,11 @@ function bindLikeButton(post, userId) {
             });
             if (response.ok) {
                 const result = await response.json();
-                const isLiked = result.data.likes.includes(userId);
-                likeButton.textContent = `좋아요 ${result.data.likeCount}`;
+                const likes = result.data.likes || [];
+                const isLiked = likes.includes(userId);
+                const likeCount = result.data.likeCount;
+
+                likeButton.textContent = `좋아요 ${likeCount}`;
                 likeButton.classList.toggle("liked", isLiked); // 동기화된 상태로 업데이트
             } else {
                 console.error("좋아요 상태 동기화 실패");
@@ -398,6 +401,7 @@ function bindLikeButton(post, userId) {
     likeButton.addEventListener("click", async () => {
         try {
             const isLiked = likeButton.classList.contains("liked");
+
             const url = `${BASE_IP}/posts/${post.postId}/likes/${userId}`;
             const method = isLiked ? "DELETE" : "POST";
 
@@ -408,7 +412,8 @@ function bindLikeButton(post, userId) {
 
             if (response.ok) {
                 const result = await response.json();
-                likeButton.textContent = `좋아요 ${result.data.likeCount}`;
+                const likeCount = result.data;
+                likeButton.textContent = `좋아요 ${likeCount}`;
                 likeButton.classList.toggle("liked", !isLiked); // 상태 반전
             } else {
                 const errorResult = await response.json();
