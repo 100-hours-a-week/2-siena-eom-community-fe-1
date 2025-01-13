@@ -20,7 +20,8 @@ form {
     font-size: 12px;
     margin-top: 20px;
     margin-bottom: 20px;
-    display: block;
+    display: flex;
+    position: static;
 }
 
 .input-box {
