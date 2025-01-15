@@ -3,7 +3,7 @@ const BASE_IP = 'http://localhost:3001';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const postDetail = document.getElementById("post-detail");
-    const commentButton = document.querySelector(".purple-button");
+    const commentButton = document.querySelector(".gray-button");
     const commentTextarea = document.querySelector(".comment-input textarea");
     
     // URL에서 postId, commentId 읽기
@@ -143,9 +143,7 @@ function renderPost(post, userId) {
     const postImagePath = post.postImage;
 
     postDetail.innerHTML = `
-        <div class="post-header">
-            <h2 class="post-title">${post.title}</h2>
-        </div>
+        
         <div class="post-info">
             <div class="post-author">
                 <img class="profile-icon2" src="${authorProfilePath}" alt="작성자 프로필" />
@@ -164,25 +162,27 @@ function renderPost(post, userId) {
             </div>
         </div>
 
-        <hr class="horizontal-rule"/>
-        
         <article>
             <section class="body">
+                <div class="post-header">
+                    <h2 class="post-title">${post.title}</h2>
+                </div>
+                <hr class="divider">
                 <div class="content-img">
                 ${
                     postImagePath
                         ? `<img src="${postImagePath}" alt="게시글 이미지" />`
-                        : `<div class="no-image">첨부된 이미지가 없습니다. (;＾◇＾;)ゝ</div>`
+                        : `<div class="no-image"></div>`
                 }
                 </div>
                 <article class="content">${post.content}</article>
+                <hr class="divider">
+                <div class="stats">
+                    <div class="like-count">❤️ ${post.likeCount}</div>
+                    <div class="view-count">👀 ${post.view}</div>
+                    <div class="comment-count">💬 ${post.commentsCount}</div>
+                </div>
             </section>
-            <hr class="horizontal-rule"/>
-            <div class="stats">
-                <div class="like-count">좋아요 ${post.likeCount}</div>
-                <div class="view-count">조회수 ${post.view}</div>
-                <div class="comment-count">댓글 ${post.commentsCount}</div>
-            </div>
         </article>
     `;
 }
@@ -234,7 +234,7 @@ function renderComments(comments, userId, postId) {
 
             if (comment) {
                 const commentTextarea = document.querySelector(".comment-input textarea");
-                const commentButton = document.querySelector(".purple-button");
+                const commentButton = document.querySelector(".gray-button");
 
                 commentTextarea.value = comment.content; // 댓글 내용을 입력란에 채우기
                 commentButton.textContent = "댓글 수정"; // 버튼 텍스트 변경
@@ -266,7 +266,7 @@ async function loadComments(postId, userId) {
             });
             if (response.ok) {
                 const result = await response.json();
-                commentCount.textContent = `댓글 ${result.data.commentsCount}`;
+                commentCount.textContent = `💬 ${result.data.commentsCount}`;
             } else {
                 console.error("댓글 상태 동기화 실패");
             }
@@ -385,7 +385,7 @@ function bindLikeButton(post, userId) {
                 const isLiked = likes.includes(userId);
                 const likeCount = result.data.likeCount;
 
-                likeButton.textContent = `좋아요 ${likeCount}`;
+                likeButton.textContent = `❤️ ${likeCount}`;
                 likeButton.classList.toggle("liked", isLiked); // 동기화된 상태로 업데이트
             } else {
                 console.error("좋아요 상태 동기화 실패");
@@ -413,7 +413,7 @@ function bindLikeButton(post, userId) {
             if (response.ok) {
                 const result = await response.json();
                 const likeCount = result.data;
-                likeButton.textContent = `좋아요 ${likeCount}`;
+                likeButton.textContent = `❤️ ${likeCount}`;
                 likeButton.classList.toggle("liked", !isLiked); // 상태 반전
             } else {
                 const errorResult = await response.json();
