@@ -58,11 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailValue = element.value.trim();
             if (!emailValue) {
                 helper.textContent = '*이메일을 입력해주세요';
-                helper.style.color = 'red';
                 isEmailValid = false;
             } else if (emailValue.length < 5 || !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailValue)) {
                 helper.textContent = '*올바른 이메일 주소 형식을 입력해주세요.';
-                helper.style.color = 'red';
                 isEmailValid = false;
             } else {
                 // 유효성 검사 통과후에 중복 확인 요청
@@ -144,10 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const passwordCriteria = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;
             if (!pwValue) {
                 helper.textContent = '*비밀번호를 입력해주세요';
-                helper.style.color = 'red';
             } else if (!passwordCriteria.test(pwValue)) {
                 helper.textContent = '*비밀번호는 8자 이상, 20자 이하이며 대문자, 소문자, 숫자, 특수문자를 각각 포함해야 합니다.';
-                helper.style.color = 'red';
             } else {
                 helper.textContent = '';
             }
@@ -157,10 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pwckValue = element.value.trim();
             if (!pwckValue) {
                 helper.textContent = '*비밀번호를 한번 더 입력해주세요';
-                helper.style.color = 'red';
             } else if (pwValue !== pwckValue) {
-                helper.textContent = '*비밀번호가 일치하지 않습니다.';
-                helper.style.color = 'red';
             } else {
                 helper.textContent = '';
             }
