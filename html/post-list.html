@@ -7,23 +7,35 @@
     <link rel="stylesheet" href="../css/post-list.css">
 </head>
 <body>
-    <header>
-        <h1 class="title" id="headerTitle">아무말 대잔치</h1>
-        <div class="header-menu-right">
-            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="./profile-edit.html">회원정보 수정</a>
-                <a href="./pw-change.html">비밀번호 수정</a>
-                <a href="./login.html">로그아웃</a>
-            </div>
-        </div>
-    </header>
 
     <div class="container">
-        <div class="message">
-            안녕하세요,<br/> 아무말 대잔치 <span class="bold">게시판</span>입니다.
+        <header>
+            <div class="header-menu-left">
+                <a onclick="location.href='./post-write.html'" target="_blank">
+                    <img class="icon-image" src="../images/write.png" alt="게시글 작성 아이콘">
+                </a>
+            </div>
+            <h1 class="title" id="headerTitle">WeMessage</h1>
+            <div class="header-menu-right">
+                <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="./profile-edit.html">회원정보 수정</a>
+                    <a href="./pw-change.html">비밀번호 수정</a>
+                    <a href="./login.html">로그아웃</a>
+                </div>
+            </div>
+        </header>
+        <hr class="horizontal-rule"/>
+
+        <div class="info-message1">
+            <h3 class="message">What's up, everyone? 😎😎 <br/>
+                Post whaterver you want!</h3>
         </div>
-        <button type="button" onclick="location.href='./post-write.html'" class="purple-button">게시글 작성</button>
+        <div class="info-message2">
+            <h3 class="message">모두를 위한 커뮤니티, <br/>
+                WeMessage 입니다 🥰❤️
+            </h3>
+        </div>
         
         <section class="PostList">
 

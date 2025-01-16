@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const uploadResult = await uploadResponse.json();
                 profilePath = uploadResult.data.filePath; // 서버에서 받은 프로필 경로
                 profileImage.src = profilePath; // 미리보기 업데이트
+                inputs.profile.helper.style.display = 'none';
             } catch (error) {
                 console.error('프로필 업로드 중 오류:', error);
                 alert('프로필 사진 업로드에 실패했습니다.');

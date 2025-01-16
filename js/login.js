@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(data),
         credentials: 'include'
       });
-      console.log('요청데이터:', data);
+      // console.log('요청데이터:', data);
       const result = await response.json();
       console.log('Response:', result);
 

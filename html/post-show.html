@@ -7,29 +7,27 @@
     <link rel="stylesheet" href="../css/post-show.css">
 </head>
 <body>
-    <header>
-        <div class="header-menu-left">
-            <a id="backspace" class="backspace" href="./post-list.html">
-                <img class="backspace" src="../images/backspace.png"/>
-            </a>
-        </div>
-        <h1 class="title" id="headerTitle">아무말 대잔치</h1>
-        <div class="header-menu-right">
-            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="./profile-edit.html">회원정보 수정</a>
-                <a href="./pw-change.html">비밀번호 수정</a>
-                <a href="./login.html">로그아웃</a>
-            </div>
-        </div>
-
-    </header>
     <div class="container">
+        <header>
+            <div class="header-menu-left">
+                <a id="backspace" class="backspace" href="javascript:void(0);" onclick="goBack();">
+                    <img class="icon-image" src="../images/backspace.png"/>
+                </a>
+            </div>
+            <h1 class="title" id="headerTitle">WeMessage</h1>
+            <div class="header-menu-right">
+                <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="./profile-edit.html">회원정보 수정</a>
+                    <a href="./pw-change.html">비밀번호 수정</a>
+                    <a href="./login.html">로그아웃</a>
+                </div>
+            </div>
+        </header>
+        <hr class="horizontal-rule"/>
 
         <div id="post-detail">
-            <div class="post-header">
-                <h2 class="post-title">제목 1</h2>
-            </div>
+            
             <div class="post-info">
                 <div class="post-author">
                     <img class="profile-icon2" src="../images/default-profile.png" alt="작성자 프로필" />
@@ -43,45 +41,41 @@
                     <button type="button" id="PostDeleteBtn" onclick="showConfirmModal('post')">삭제</button>
                 </div>
             </div>
-
-            <hr class="horizontal-rule"/>
     
             <article>
                 <section class="body">
+                    <div class="post-header">
+                        <h2 class="post-title">제목 1</h2>
+                    </div>
+                    <hr class="divider">
                     <div class="content-img">
-                        <img id="no-image" alt="첨부된 이미지가 없습니다. (;＾◇＾;)ゝ" />
+                        <img id="no-image"/>
                     </div>
-                    <article class="content">무엇을 얘기할까요? 아무말이라면, 삶은 항상 놀라운 모험이라고 생각합니다. 우리는 매일 새로운 경험을 하고 배우며 성장합니다. 때로는 어려움과 도전이 있지만, 그것들이 우리를 더 강하고 지혜롭게 만듭니다. 또한 우리는 주변의 사람들과 연결되며 사랑과 지지를 받습니다. 그래서 우리의 삶은 소중하고 의미가 있습니다.<br/>
-                        자연도 아름다운 이야기입니다. 우리 주변의 자연은 끝없는 아름다움과 신비로움을 담고 있습니다. 산, 바다, 숲, 하늘 등 모든 것이 우리를 놀라게 만들고 감동시킵니다. 자연은 우리의 생명과 안정을 지키며 우리에게 힘을 주는 곳입니다.<br/>
-                        마지막으로, 지식을 향한 탐구는 항상 흥미로운 여정입니다. 우리는 끝없는 지식의 바다에서 배우고 발견할 수 있으며, 이것이 우리를 더 깊이 이해하고 세상을 더 넓게 보게 해줍니다.
-                        그런 의미에서, 삶은 놀라움과 경이로움으로 가득 차 있습니다. 새로운 경험을 즐기고 항상 앞으로 나아가는 것이 중요하다고 생각합니다.
-                    </article>
+                    <article class="content">무엇을 얘기할까요? 아무말이라면, 삶은 항상 놀라운 모험이라고 생각합니다. 우리는 매일 새로운 경험을 하고 배우며 성장합니다. 때로는 어려움과 도전이 있지만, 그것들이 우리를 더 강하고 지혜롭게 만듭니다. 또한 우리는 주변의 사람들과 연결되며 사랑과 지지를 받습니다. 그래서 우리의 삶은 소중하고 의미가 있습니다. </article>
+                    <hr class="divider">
+                    <div class="stats">
+                        <div class="like-count" id="like">
+                            <h3>123</h3>
+                            <p>❤️</p>
+                        </div>
+                        <div class="view-count">
+                            <h3>123</h3>
+                            <p>👀</p>
+                        </div>
+                        <div class="comment-count">
+                            <h3>123</h3>
+                            <p>💬</p>
+                        </div>
+                    </div>
                 </section>
-                <hr class="horizontal-rule"/>
-                <div class="stats">
-                    <div class="like-count" id="like">
-                        <h3>123</h3>
-                        <p>좋아요</p>
-                    </div>
-                    <div class="view-count">
-                        <h3>123</h3>
-                        <p>조회수</p>
-                    </div>
-                    <div class="comment-count">
-                        <h3>123</h3>
-                        <p>댓글</p>
-                    </div>
-                </div>
             </article>
 
         </div>
 
-
         <section class="comment">
             <div class="comment-input">
                 <textarea placeholder="댓글을 남겨주세요!"></textarea>
-                <hr class="divider">
-                <button class="purple-button">댓글 등록</button>
+                <button class="gray-button">댓글 등록</button>
             </div>
 
             <div class="comment-list">

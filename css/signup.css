@@ -18,13 +18,18 @@ form {
 #profile-helper {
     color: #ff0000;
     font-size: 12px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: block;
+    margin-bottom: 5px;
+    display: flex;
+    position: static;
 }
 
 .input-box {
     position: relative;
     margin-bottom: 30px;
     background-color: transparent;
+}
+
+label {
+    display: block;
+    margin-bottom: 0;
 }
