@@ -7,27 +7,33 @@
     <link rel="stylesheet" href="../css/profile-edit.css" />
 </head>
 <body>
-    <header>
-        <h1 class="title" id="headerTitle">아무말 대잔치</h1>
-        <div class="header-menu-right">
-            <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="./profile-edit.html">회원정보 수정</a>
-                <a href="./pw-change.html">비밀번호 수정</a>
-                <a href="./login.html">로그아웃</a>
-            </div>
-        </div>
-    </header>
     
     <div class="container">
+        <header>
+            <div class="header-menu-left">
+                <a id="backspace" class="backspace" href="./post-list.html">
+                    <img class="icon-image" src="../images/backspace.png"/>
+                </a>
+            </div>
+            <h1 class="title" id="headerTitle">WeMessage</h1>
+            <div class="header-menu-right">
+                <img src="../images/default-profile.png" class="profile-icon" onclick="toggleMenu()" alt="프로필 사진">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="./profile-edit.html">회원정보 수정</a>
+                    <a href="./pw-change.html">비밀번호 수정</a>
+                    <a href="./login.html">로그아웃</a>
+                </div>
+            </div>
+        </header>
+        <hr class="horizontal-rule"/>
 
         <form class="edit-form" action="" method="POST">
             <h2 class="title">회원 정보 수정</h2>
 
             <div class="profile-input">
                 <label for="profile">프로필 사진</label>
-                <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
                 <p class="helperText" id="profile-helper"></p>
+                <input type="file" name="profile" id="profile" accept="image/*" style="display: none;" />
                 <img class="icon-image" src="../images/default-profile.png" id="profile-image" alt="프로필 이미지"/>
                 
             </div>

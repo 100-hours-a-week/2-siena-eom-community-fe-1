@@ -27,7 +27,7 @@ button {
 }
 
 button:hover {
-    transform: scale(1.3);
+    transform: scale(1.2);
 }
 
 .modal-buttons .modal-cancel:hover {
@@ -224,7 +224,6 @@ button:hover {
     display: flex;
     flex-direction: column;
     left: 0;
-    /* width: 100% */
 }
 
 .comment-content{
@@ -274,7 +273,7 @@ article.content {
 /* 좋아요 호버 */
 .like-count:hover {
     color: red;
-    transform: scale(1.3);
+    transform: scale(1.2);
 }
 
 /* 좋아요 눌려있을 때 */

@@ -3,36 +3,40 @@
 .edit-form{
     display: flex;
     justify-content: center;
-    height: 100%;
+    height: 80%;
     flex-direction: column;
 }
 
-/* id="profile-helper" */
+/*id="profile-helper*/
 #profile-helper {
     color: #ff0000;
     font-size: 12px;
+    margin-top: 1px;
+    margin-bottom: 5px;
     display: block;
+    position: relative;
 }
 
-.icon-image {
-    margin-top: 40px;
+#icon-image {
+    margin-top: 20px;
     margin-bottom: 10px;
 }
 
 .toast {
     visibility: hidden; /* 기본적으로 숨김 */
-    min-width: 50px;
-    background-color: #ACA0eB;
+    width: 50px;
+    height: auto;
+    background-color: #007bffad;
     color: #fff;
     text-align: center; /* 텍스트 중앙 정렬 */
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 10px;
     position: fixed;
-    left: 50%; /* 중앙 정렬 */
-    bottom: 50px; /* 아래에서의 위치 */
     font-size: 12px;
     transition: visibility 0s, opacity 0.5s linear; /* 페이드 효과 */
-    opacity: 0;
+    opacity: 95%;
+    top: 55%; 
+    left: 50%;
     transform: translateX(-50%);
 }
 
