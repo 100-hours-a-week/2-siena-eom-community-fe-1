@@ -33,7 +33,7 @@
 ```
 
 ### 🎥 시연 영상
-주요기능 위주로 녹화하였습니다.
+주요기능 위주로 녹화하였습니다. <br/>
 https://github.com/user-attachments/assets/677d0f58-0c7e-4bd0-845a-652c14993370
 
 ### 📚 기술 스택
@@ -92,5 +92,3 @@ https://github.com/user-attachments/assets/677d0f58-0c7e-4bd0-845a-652c14993370
 ```
 
 ### [⚙️ 백엔드 레포지토리](https://github.com/100-hours-a-week/2-siena-eom-community-be.git)
-
-![Image](https://github.com/user-attachments/assets/d2cf7ba9-a6f5-4fbc-a821-13e162914138)
