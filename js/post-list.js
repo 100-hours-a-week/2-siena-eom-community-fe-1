@@ -1,6 +1,5 @@
+import BASE_IP from '../config.js';
 document.addEventListener("DOMContentLoaded", async () => {
-  // const BASE_IP = 'http://3.39.237.226:3001';
-  const BASE_IP = 'http://localhost:3001';
 
     try {
       const response = await fetch(`${BASE_IP}/posts`);

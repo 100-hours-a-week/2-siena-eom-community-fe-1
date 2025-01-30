@@ -1,10 +1,8 @@
+import BASE_IP from '../config.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.change-form');
     const submitButton = document.querySelector('.purple-button');
     const toast = document.getElementById('toast');
-    // const BASE_IP = 'http://3.39.237.226:3001';
-    const BASE_IP = 'http://localhost:3001';
-
 
     // 입력 필드와 헬퍼 텍스트 매핑
     const inputs = {
