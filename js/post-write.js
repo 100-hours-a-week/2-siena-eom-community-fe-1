@@ -1,8 +1,7 @@
+import BASE_IP from '../config.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.write-form');
     const submitButton = document.querySelector('.purple-button');
-    // const BASE_IP = 'http://3.39.237.226:3001';
-    const BASE_IP = 'http://localhost:3001';
 
     let imagePath = null;
 

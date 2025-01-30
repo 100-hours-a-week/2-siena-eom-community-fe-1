@@ -1,11 +1,10 @@
+import BASE_IP from '../config.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('.edit-form');
     const profileImage = document.getElementById('profile-image');
     const profileInput = document.getElementById('profile');
     const toast = document.getElementById('toast');
     const emailElement = document.getElementById('user-email');
-    // const BASE_IP = 'http://3.39.237.226:3001';
-    const BASE_IP = 'http://localhost:3001';
 
     let initNickname = '';
     let profilePath = '';

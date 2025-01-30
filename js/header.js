@@ -1,3 +1,4 @@
+import BASE_IP from '../config.js';
 function goBack() {
     if (document.referrer) {
         window.history.back();
@@ -10,8 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
     const headerTitle = document.getElementById("headerTitle");
     const profileIcon = document.querySelector(".profile-icon");
-    // const BASE_IP = 'http://3.39.237.226:3001';
-    const BASE_IP = 'http://localhost:3001';
 
     try {
         // 사용자 정보 API 호출 (세션 기반)

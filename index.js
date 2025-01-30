@@ -13,6 +13,10 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 app.use(express.json());
 
+app.get('/config.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'config.js'));
+});
+
 // 초기 화면으로 login.html을 제공
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'html', 'login.html'));
