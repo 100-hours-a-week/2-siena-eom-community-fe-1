@@ -7,6 +7,8 @@ function goBack() {
     }
 }
 
+window.goBack = goBack;
+
 document.addEventListener('DOMContentLoaded', async () => {
     const logoutLink = document.querySelector('.dropdown-menu a[href="./login.html"]');
     const headerTitle = document.getElementById("headerTitle");
