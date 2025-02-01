@@ -60,14 +60,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 bindLikeButton(result.data, userId); // 좋아요 버튼 이벤트 바인딩
                
             } else {
-                postDetail.innerHTML = "<p>게시글을 찾을 수 없습니다.</p>";
+                postDetail.textContent = "<p>게시글을 찾을 수 없습니다.</p>";
             }
         } catch (error) {
             console.error("게시글 데이터를 불러오는 중 오류 발생:", error);
-            postDetail.innerHTML = "<p>게시글을 불러오는 데 실패했습니다.</p>";
+            postDetail.textContent = "<p>게시글을 불러오는 데 실패했습니다.</p>";
         }
     } else {
-        postDetail.innerHTML = "<p>유효하지 않은 요청입니다.</p>";
+        postDetail.textContent = "<p>유효하지 않은 요청입니다.</p>";
     }
 
     // 댓글 작성 및 수정 이벤트
@@ -137,60 +137,147 @@ async function increaseView(postId) {
 function renderPost(post, userId) {
     const postDetail = document.getElementById("post-detail");
 
+    postDetail.textContent = "";
+
     const isAuthor = Number(post.author) === userId;
     const authorProfilePath = post.authorProfile
     const postImagePath = post.postImage;
 
-    postDetail.innerHTML = `
-        
-        <div class="post-info">
-            <div class="post-author">
-                <img class="profile-icon2" src="${authorProfilePath}" alt="작성자 프로필" />
-            </div>
-            <div class="post-info-2">
-                <span class="author-name">${post.authorNickname}</span>
-                <span class="post-date">${post.postDate}</span>    
-            </div>
-            <div class="buttons">
-                ${
-                    isAuthor
-                        ? `<button type="button" id="PostEditBtn" onclick="location.href='./post-edit.html?postId=${post.postId}'">수정</button>
-                           <button type="button" id="PostDeleteBtn" onclick="showConfirmModal('post', ${post.postId})">삭제</button>`
-                        : '<div style="visibility: hidden; height: 36px;"></div>'
-                }
-            </div>
-        </div>
+    // innerHTML 안쓰게 변경 ---
+    const postInfo = document.createElement("div") // 게시글 정보 컨테이너
+    postInfo.classList.add("post-info");
 
-        <article>
-            <section class="body">
-                <div class="post-header">
-                    <h2 class="post-title">${post.title}</h2>
-                </div>
-                <hr class="divider">
-                <div class="content-img">
-                ${
-                    postImagePath
-                        ? `<img src="${postImagePath}" alt="게시글 이미지" />`
-                        : `<div class="no-image"></div>`
-                }
-                </div>
-                <article class="content">${post.content}</article>
-                <hr class="divider">
-                <div class="stats">
-                    <div class="like-count">❤️ ${post.likeCount}</div>
-                    <div class="view-count">👀 ${post.view}</div>
-                    <div class="comment-count">💬 ${post.commentsCount}</div>
-                </div>
-            </section>
-        </article>
-    `;
+    const postAuthor = document.createElement("div") // 작성자 프로필 사진
+    postAuthor.classList.add("post-author");
+    const authorImg = document.createElement("img");
+    authorImg.classList.add("profile-icon2");
+    authorImg.src = authorProfilePath;
+    postAuthor.appendChild(authorImg);
+    
+    const postInfo2 = document.createElement("div"); // 게시글 정보 2 (작성자닉네임, 작성날짜)
+    postInfo2.classList.add("post-info-2");
+
+    const authorName = document.createElement("span");
+    authorName.classList.add("author-name");
+    authorName.textContent = post.authorNickname;
+
+    const postDate = document.createElement("span");
+    postDate.classList.add("post-date");
+    postDate.textContent = post.postDate;
+
+    postInfo2.appendChild(authorName);
+    postInfo2.appendChild(postDate);
+
+    // 수정, 삭제 버튼 (작성자만 보이도록)
+    const buttons = document.createElement("div");
+    buttons.classList.add("buttons");
+
+    if (isAuthor) {
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.id = "PostEditBtn";
+        editBtn.textContent = "수정";
+        editBtn.onclick = () => location.href = `./post-edit.html?postId=${post.postId}`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.id = "PostDeleteBtn";
+        deleteBtn.textContent = "삭제";
+        deleteBtn.onclick = () => showConfirmModal('post', post.postId);
+
+        buttons.appendChild(editBtn);
+        buttons.appendChild(deleteBtn);
+    } else {
+        buttons.style.visibility = "hidden";
+        // buttons.style.height = "36px";
+    }
+
+    postInfo.appendChild(postAuthor);
+    postInfo.appendChild(postInfo2);
+    postInfo.appendChild(buttons);
+
+    // 게시글 본문
+    const article = document.createElement("article");
+    const sectionBody = document.createElement("section");
+    sectionBody.classList.add("body");
+
+    const postHeader = document.createElement("div");
+    postHeader.classList.add("post-header");
+
+    const postTitle = document.createElement("h2");
+    postTitle.classList.add("post-title");
+    postTitle.textContent = post.title;
+
+    postHeader.appendChild(postTitle);
+
+    const divider1 = document.createElement("hr");
+    divider1.classList.add("divider");
+
+    // 게시글 이미지
+    const contentImg = document.createElement("div");
+    contentImg.classList.add("content-img");
+
+    if (postImagePath) {
+        const img = document.createElement("img");
+        img.src = postImagePath;
+        img.alt = "게시글 이미지";
+        contentImg.appendChild(img);
+    } else {
+        const noImage = document.createElement("div");
+        noImage.classList.add("no-image");
+        contentImg.appendChild(noImage);
+    }
+
+    // 게시글 내용
+    const content = document.createElement("article");
+    content.classList.add("content");
+    content.textContent = post.content;
+
+    const divider2 = document.createElement("hr");
+    divider2.classList.add("divider");
+
+    // 게시글 통계 (좋아요, 조회수, 댓글)
+    const stats = document.createElement("div");
+    stats.classList.add("stats");
+
+    const likeCount = document.createElement("div");
+    likeCount.classList.add("like-count");
+    likeCount.textContent = `❤️ ${post.likeCount}`;
+
+    const viewCount = document.createElement("div");
+    viewCount.classList.add("view-count");
+    viewCount.textContent = `👀 ${post.view}`;
+
+    const commentCount = document.createElement("div");
+    commentCount.classList.add("comment-count");
+    commentCount.textContent = `💬 ${post.commentsCount}`;
+
+    stats.appendChild(likeCount);
+    stats.appendChild(viewCount);
+    stats.appendChild(commentCount);
+
+    // 섹션에 추가
+    sectionBody.appendChild(postHeader);
+    sectionBody.appendChild(divider1);
+    sectionBody.appendChild(contentImg);
+    sectionBody.appendChild(content);
+    sectionBody.appendChild(divider2);
+    sectionBody.appendChild(stats);
+
+    // 아티클에 섹션 추가
+    article.appendChild(sectionBody);
+
+    // 최종적으로 postDetail에 추가
+    postDetail.appendChild(postInfo);
+    postDetail.appendChild(article);
+
 }
 
 // 댓글 렌더링 함수
 function renderComments(comments, userId, postId) {
     const commentList = document.querySelector(".comment-list");
 
-    commentList.innerHTML = "";
+    commentList.textContent = "";
 
     comments.forEach((comment) => {
         const isAuthor = String(comment.commentAuthor) === String(userId);
@@ -199,29 +286,71 @@ function renderComments(comments, userId, postId) {
             ? comment.authorProfile
             : `${BASE_IP}${comment.authorProfile}`;
 
-        const commentItem = `
-            <div class="comment-item" id="comment-${comment.commentId}">
-                <div class="comment-author">
-                    <img class="profile-icon2" src="${authorProfilePath || "../images/default-profile.png"}" alt="작성자 프로필">
-                </div>
-                <div class="comment-item-2">
-                    <span class="author-name">${comment.authorNickname || "Unknown"}</span>
-                    <span class="post-date">${comment.commentDate}</span>    
-                </div>
-                <div class="buttons">
-                    ${
-                        isAuthor
-                            ? `<button class="commentEditBtn" data-comment-id="${comment.commentId}">수정</button>
-                               <button class="commentDeleteBtn" data-comment-id="${comment.commentId}" onclick="showConfirmModal('comment', ${comment.commentId})">삭제</button>`
-                            : '<div style="visibility: hidden; height: 36px;"></div>'
-                    }
-                </div>
-            </div>
-            <div class="comment-content">
-                <p>${comment.content}</p>
-            </div>
-        `;
-        commentList.insertAdjacentHTML("beforeend", commentItem);
+        // innerHTML 안쓰게 변경 ---
+        const commentItem = document.createElement("div"); // 댓글 아이템 컨테이너
+        commentItem.classList.add("comment-item");
+        commentItem.id = `comment-${comment.commentId}`;
+
+        const commentAuthor = document.createElement("div"); // 작성자 프로필 이미지
+        commentAuthor.classList.add("comment-author");
+        const authorImg = document.createElement("img");
+        authorImg.classList.add("profile-icon2");
+        authorImg.src = authorProfilePath;
+        authorImg.alt = "작성자 프로필";
+        commentAuthor.appendChild(authorImg);
+
+        const commentItem2 = document.createElement("div"); // 댓글 정보 (작성자 닉네임, 게시날짜)
+        commentItem2.classList.add("comment-item-2");
+
+        const authorName = document.createElement("span");
+        authorName.classList.add("author-name");
+        authorName.textContent = comment.authorNickname || "Unknown";
+
+        const commentDate = document.createElement("span");
+        commentDate.classList.add("post-date");
+        commentDate.textContent = comment.commentDate;
+
+        commentItem2.appendChild(authorName);
+        commentItem2.appendChild(commentDate);
+
+        // 버튼 컨테이너
+        const buttons = document.createElement("div");
+        buttons.classList.add("buttons");
+
+        if (isAuthor) {
+            const editBtn = document.createElement("button");
+            editBtn.classList.add("commentEditBtn");
+            editBtn.dataset.commentId = comment.commentId;
+            editBtn.textContent = "수정";
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("commentDeleteBtn");
+            deleteBtn.dataset.commentId = comment.commentId;
+            deleteBtn.textContent = "삭제";
+            deleteBtn.onclick = () => showConfirmModal('comment', comment.commentId);
+
+            buttons.appendChild(editBtn);
+            buttons.appendChild(deleteBtn);
+        } else {
+            buttons.style.visibility = "hidden";
+            // buttons.style.height = "36px";
+        }
+
+        // 댓글 내용 컨테이너
+        const commentContent = document.createElement("div");
+        commentContent.classList.add("comment-content");
+        const commentText = document.createElement("p");
+        commentText.textContent = comment.content;
+        commentContent.appendChild(commentText);
+
+        // 요소 조립
+        commentItem.appendChild(commentAuthor);
+        commentItem.appendChild(commentItem2);
+        commentItem.appendChild(buttons);
+
+        // 최종적으로 commentList에 추가
+        commentList.appendChild(commentItem);
+        commentList.appendChild(commentContent);
     });
     
     // 댓글 수정 이벤트 바인딩
