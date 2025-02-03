@@ -189,7 +189,6 @@ function renderPost(post, userId) {
         buttons.appendChild(deleteBtn);
     } else {
         buttons.style.visibility = "hidden";
-        // buttons.style.height = "36px";
     }
 
     postInfo.appendChild(postAuthor);
@@ -256,19 +255,15 @@ function renderPost(post, userId) {
     stats.appendChild(viewCount);
     stats.appendChild(commentCount);
 
-    // 섹션에 추가
+    // 요소 조립
     sectionBody.appendChild(postHeader);
     sectionBody.appendChild(divider1);
     sectionBody.appendChild(contentImg);
     sectionBody.appendChild(content);
     sectionBody.appendChild(divider2);
     sectionBody.appendChild(stats);
-
-    // 아티클에 섹션 추가
-    article.appendChild(sectionBody);
-
-    // 최종적으로 postDetail에 추가
-    postDetail.appendChild(postInfo);
+    article.appendChild(sectionBody); // article에 section 추가
+    postDetail.appendChild(postInfo); // 최종적으로 postDetail에 추가
     postDetail.appendChild(article);
 
 }
@@ -333,7 +328,6 @@ function renderComments(comments, userId, postId) {
             buttons.appendChild(deleteBtn);
         } else {
             buttons.style.visibility = "hidden";
-            // buttons.style.height = "36px";
         }
 
         // 댓글 내용 컨테이너
@@ -347,9 +341,7 @@ function renderComments(comments, userId, postId) {
         commentItem.appendChild(commentAuthor);
         commentItem.appendChild(commentItem2);
         commentItem.appendChild(buttons);
-
-        // 최종적으로 commentList에 추가
-        commentList.appendChild(commentItem);
+        commentList.appendChild(commentItem); // 최종적으로 commentList에 추가
         commentList.appendChild(commentContent);
     });
     
